@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Compartilhar tela</title>
+<style>
+*{box-sizing:border-box;margin:0}body{background:#0b0b0d;color:#f4f4f6;font:14px -apple-system,"Segoe UI",system-ui,sans-serif;padding:20px;display:flex;flex-direction:column;height:100vh}
+h1{font-size:18px;margin-bottom:4px;background:linear-gradient(180deg,#fff 30%,#8a8a92);-webkit-background-clip:text;color:transparent}
+p{color:#85858d;margin-bottom:14px}
+#g{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;align-content:start;padding:2px}
+.it{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:8px;cursor:pointer;transition:.2s}
+.it:hover{background:rgba(255,255,255,.1)}.it.on{border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 22px rgba(255,255,255,.25)}
+.it img{width:100%;aspect-ratio:16/10;object-fit:contain;background:#000;border-radius:9px;display:block}
+.it span{display:block;margin-top:7px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+button{border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:10px 22px;font:inherit;color:inherit;cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03))}
+button.go{background:#fff;color:#000;font-weight:600}button:disabled{opacity:.4;cursor:default}
+</style></head><body>
+<h1>Compartilhar tela</h1><p>Escolha a tela inteira ou uma janela.</p>
+<div id="g"></div>
+<div class="row"><button id="c">Cancelar</button><button id="ok" class="go" disabled>Compartilhar</button></div>
+<script>
+let sel=null;const g=document.getElementById('g'),ok=document.getElementById('ok');
+window.pickerAPI.onSources(list=>{g.innerHTML='';list.forEach(s=>{const d=document.createElement('div');d.className='it';const im=new Image();im.src=s.thumb;const n=document.createElement('span');n.textContent=s.name;d.append(im,n);
+ d.onclick=()=>{sel=s.id;[...g.children].forEach(x=>x.classList.remove('on'));d.classList.add('on');ok.disabled=false};d.ondblclick=()=>window.pickerAPI.choose(s.id);g.append(d)})});
+ok.onclick=()=>window.pickerAPI.choose(sel);document.getElementById('c').onclick=()=>window.pickerAPI.choose(null);
+</script></body></html>

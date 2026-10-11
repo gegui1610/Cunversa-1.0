@@ -1,0 +1,45 @@
+CUNVERSA — APP DE WINDOWS (.exe)
+================================
+
+O app é uma janela que abre o SEU site (GitHub Pages). Por isso:
+  • Atualizou o site no GitHub  ->  é só abrir o app de novo, ele já vem com a versão nova.
+  • NÃO precisa gerar o .exe outra vez a cada mudança no site.
+  • O .exe só precisa ser refeito se você mudar a pasta "desktop" (ícone, nome, etc.).
+
+Se o site estiver fora do ar, o app abre a cópia reserva que vem dentro dele.
+
+------------------------------------------------------------
+JEITO 1 (recomendado) — o próprio GitHub gera o .exe
+------------------------------------------------------------
+1. Extraia o zip dentro da pasta do seu repositório (onde está o index.html),
+   deixando as pastas ".github" e "desktop" ao lado do index.html. Faça commit e push.
+2. No GitHub: aba "Actions" > "Gerar app Windows (.exe)" > "Run workflow".
+3. Espere uns 3–5 minutos. Clique na execução e baixe "Cunversa-Windows" em "Artifacts".
+4. Dentro tem:
+     Cunversa-Setup.exe     -> instala no PC (atalho no menu iniciar/área de trabalho)
+     Cunversa-Portable.exe  -> abre direto, sem instalar
+5. Mande o Setup para os amigos.
+
+A URL do site é descoberta sozinha (https://SEU-USUARIO.github.io/SEU-REPOSITORIO/).
+Se o seu site estiver em outro endereço (domínio próprio, por exemplo), abra
+"desktop/config.json" e troque "AUTO" pela URL completa antes de gerar.
+
+------------------------------------------------------------
+JEITO 2 — gerar no seu próprio PC
+------------------------------------------------------------
+1. Instale o Node.js (https://nodejs.org).
+2. Abra "desktop/config.json" e troque "AUTO" pela URL do seu site.
+3. Dê dois cliques em "desktop/build-windows.bat".
+4. Os .exe aparecem em "desktop/dist".
+
+------------------------------------------------------------
+AVISO DO WINDOWS
+------------------------------------------------------------
+Como o app não tem assinatura digital paga, o Windows pode mostrar
+"O Windows protegeu seu PC". Clique em "Mais informações" > "Executar assim mesmo".
+
+------------------------------------------------------------
+TROCAR A URL SEM REFAZER O .EXE
+------------------------------------------------------------
+Crie o arquivo  %APPDATA%\Cunversa\config.json  com:
+   { "siteUrl": "https://seu-endereco.com/" }

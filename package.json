@@ -1,0 +1,28 @@
+{
+  "name": "cunversa-desktop",
+  "productName": "Cunversa",
+  "version": "1.0.0",
+  "description": "Cunversa — app de desktop",
+  "main": "main.js",
+  "author": "Cunversa",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "prep": "node scripts/prep.js",
+    "dist": "node scripts/prep.js && electron-builder --win --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.cunversa.app",
+    "productName": "Cunversa",
+    "directories": { "buildResources": "assets", "output": "dist" },
+    "files": ["main.js", "picker-preload.js", "picker.html", "config.json", "package.json", "app/**/*", "assets/icon.png"],
+    "win": { "icon": "assets/icon.ico", "target": ["nsis", "portable"] },
+    "nsis": { "oneClick": true, "perMachine": false, "shortcutName": "Cunversa", "artifactName": "Cunversa-Setup.exe", "deleteAppDataOnUninstall": false },
+    "portable": { "artifactName": "Cunversa-Portable.exe" }
+  }
+}
