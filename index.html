@@ -169,7 +169,7 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.1/dist/umd/supabase.js"></script>
 </head><body>
 
-<div id="auth"><form class="box pane" id="af2"><img id="lgo" class="lgb" alt=""><h1 id="an" style="font-size:28px"></h1><div class="hint" id="atg"></div><a id="downloadApp" class="glass sm" href="#" target="_blank" rel="noreferrer" style="text-decoration:none;text-align:center">Baixar aplicativo</a>
+<div id="auth"><form class="box pane" id="af2"><img id="lgo" class="lgb" alt=""><h1 id="an" style="font-size:28px"></h1><div class="hint" id="atg"></div><a id="downloadApp" data-download-app class="glass sm" href="#" target="_blank" rel="noreferrer" style="text-decoration:none;text-align:center">Baixar aplicativo</a>
 <div class="tabs"><button type="button" class="glass on" id="tin">Entrar</button><button type="button" class="glass" id="tup">Criar conta</button></div>
 <input class="fi" id="au" placeholder="Nome de usuário" maxlength="20" style="display:none" autocomplete="username">
 <input class="fi" id="ae" type="email" placeholder="E-mail" required autocomplete="email">
@@ -186,7 +186,7 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <aside id="side" class="pane"><h2><span id="sn"></span><button class="ib glass" id="sset" title="Configurações do servidor">⋯</button><button class="ib glass" id="add" title="Novo canal">+</button></h2><div id="chs"></div>
 <div class="me"><div id="mavw"></div><div style="flex:1;min-width:0;font-size:13px"><div id="mn" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div class="hint" id="st">online</div></div>
 <button class="ib glass" id="bm" title="Microfone" data-q="1">🎙</button><button class="ib glass" id="bd" title="Fones" data-q="1">🎧</button><button class="ib glass" id="bs" title="Ajustes de voz">⚙</button></div></aside>
-<main id="main" class="pane"><div id="hdw" style="display:flex;align-items:center;gap:10px"><span id="hd" style="flex:1"></span><button class="glass sm" id="callb" style="display:none">📞 Ligar</button></div>
+<main id="main" class="pane"><div id="hdw" style="display:flex;align-items:center;gap:10px"><span id="hd" style="flex:1"></span><a id="downloadAppMain" data-download-app class="glass sm" href="https://github.com/gegui1610/Cunversa-1.0/releases/latest/download/Cunversa-Setup.exe" target="_blank" rel="noreferrer" style="text-decoration:none;white-space:nowrap">Baixar app</a><button class="glass sm" id="callb" style="display:none">📞 Ligar</button></div>
 <div id="fr"><div class="card"><div class="lb">Seu código de amigo</div><div class="row"><b class="code" id="mycode">----</b><button class="glass sm" id="cpc">Copiar</button></div><div class="hint" style="margin-top:6px">Passe esse código para um amigo adicionar você.</div></div>
 <form class="card" id="addf"><div class="lb">Adicionar amigo</div><div class="row"><input class="fi" id="addc" placeholder="0000-0000" inputmode="numeric" maxlength="9" autocomplete="off"><button class="glass on sm" data-q="1">Adicionar</button></div></form>
 <div id="frl"></div></div>
@@ -294,7 +294,7 @@ function loadLib(u){return new Promise(r=>{const x=document.createElement('scrip
 function appDownloadUrl(){if(CFG.DOWNLOAD_URL&&CFG.DOWNLOAD_URL!='AUTO')return CFG.DOWNLOAD_URL;const m=location.hostname.match(/^([^\.]+)\.github\.io$/i),parts=location.pathname.split('/').filter(Boolean);return m&&parts[0]?'https://github.com/'+m[1]+'/'+parts[0]+'/releases/latest':''}
 async function init(){
  if(!window.supabase)await loadLib('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js');
- $('lgo').src=LOGO;$('lgs').src=LOGO;$('an').textContent=CFG.NAME;$('atg').textContent=CFG.TAG;document.title=CFG.NAME;const dl=appDownloadUrl();if(dl)$('downloadApp').href=dl;else $('downloadApp').style.display='none';
+ $('lgo').src=LOGO;$('lgs').src=LOGO;$('an').textContent=CFG.NAME;$('atg').textContent=CFG.TAG;document.title=CFG.NAME;const dl=appDownloadUrl();document.querySelectorAll('[data-download-app]').forEach(e=>{if(dl)e.href=dl;else e.style.display='none'});
  if(!CFG.URL||!CFG.KEY||!window.supabase){$('setup').classList.add('s');return}
  sb=supabase.createClient(CFG.URL,CFG.KEY);
  sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>{if(s&&s.user){if(!booted){booted=true;boot(s.user)}}else{if(booted)teardown();booted=false;showAuth()}},0)});
