@@ -43,6 +43,7 @@ button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;bo
 #hdw{padding:14px 18px;border-bottom:1px solid var(--ln);font-size:17px}
 #msgs{flex:1;overflow:auto;padding:14px 18px;display:none;flex-direction:column;gap:14px}
 .m{display:flex;gap:10px;animation:pop .3s ease}@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+.mhead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.mhead .macts{display:flex;gap:4px;margin-left:4px}.macts button{padding:3px 7px;border-radius:9px;font-size:11px}.mquote{border-left:2px solid rgba(255,255,255,.35);padding:4px 8px;margin:4px 0;color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mreact{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.mreact button{padding:3px 7px;border-radius:10px;font-size:12px}.mreact button.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5)}
 .m b{font-weight:600}.m small{color:var(--mu);margin-left:6px;font-size:12px}.m div div{white-space:pre-wrap;word-break:break-word}
 .empty{margin:auto;color:var(--mu);text-align:center;white-space:pre-line;padding:10px}
 #cf{display:none;gap:8px;padding:12px 14px}
@@ -192,7 +193,7 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <div id="frl"></div></div>
 <div id="msgs"></div>
 <div id="vc"><div id="scr"></div><div class="tiles"><div class="tgrid" id="tl"></div></div><div id="vcm"></div><div class="ctl vcc"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="sound-panel" style="display:none"></div></div>
-<div id="stk"></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
+<div id="stk"></div><div id="replybar" class="glass" style="display:none;align-items:center;gap:8px;padding:7px 12px;margin:0 14px 8px;border-radius:12px;font-size:12px"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span><button type="button" class="ib glass" id="cancelReply" title="Cancelar resposta">×</button></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
 <aside id="mem" class="pane"><div class="lb" id="mlb">Online agora</div><div id="ml"></div></aside>
 </div>
 
@@ -265,7 +266,7 @@ const FX=[
 ['Órbita dourada','orbit','#ffc400'],['Brilho','shine'],['Flutuar','float','#7c4dff'],['Faíscas','spark','#ffd54f'],['Neon piscando','flicker','#ff3df2']];
 
 /* ===== estado ===== */
-let sb,uid=null,me={},P={},fr=[],srv=[],chans=[],mems=[],msgs=[],sounds=[],mySounds=[],lobby=null,myKey='',pres={},peers=[],dbch=null;
+let sb,uid=null,me={},P={},fr=[],srv=[],chans=[],mems=[],msgs=[],reactions=[],replyTo=null,sounds=[],mySounds=[],lobby=null,myKey='',pres={},peers=[],dbch=null;
 let sv='home',ch=null,dmId=null,booted=false,wtok=0,tgt=null,pfU=null;
 let vcCh=null,pcs={},auds={},soundAuds={},peerSoundStreamIds={},soundMuted={},mic=null,muted=false,deaf=false,scr=null,vids={},vel={},peerVolumes={};
 const dmKey=(a,b)=>[a,b].sort().join('_');
@@ -331,18 +332,23 @@ async function refreshServers(){const {data}=await sb.from('server_members').sel
 function pickFirst(){const c=chans.filter(x=>x.server_id==sv)[0];ch=c?c.id:null}
 function pickSv(k){sv=k;ch=null;dmId=null;if(k!='home'){pickFirst();refreshMembers().then(draw)}watch();draw()}
 function curQ(){if(sv=='home')return dmId?{dm_key:dmKey(uid,dmId)}:null;const c=cur();return c&&c.type=='text'?{channel_id:ch}:null}
-async function watch(){const t=++wtok;msgs=[];drawMsgs();const q=curQ();if(!q)return;
+async function loadReactions(ids){if(!ids.length){reactions=[];return}const {data}=await sb.from('message_reactions').select('*').in('message_id',ids);reactions=data||[]}
+async function watch(){const t=++wtok;msgs=[];reactions=[];drawMsgs();const q=curQ();if(!q)return;
  const {data}=await sb.from('messages').select('*').match(q).order('created_at',{ascending:false}).limit(80);if(t!=wtok)return;
- msgs=(data||[]).reverse();await ensure(msgs.map(m=>m.user_id));if(t==wtok)drawMsgs()}
+ msgs=(data||[]).reverse();await ensure(msgs.map(m=>m.user_id));await loadReactions(msgs.map(m=>m.id));if(t==wtok)drawMsgs()}
 async function sendMsg(extra){const q=curQ();if(!q)return false;if(sv!='home'&&memberPunished(uid)){toast('Você está de castigo neste servidor');return false}const {error}=await sb.from('messages').insert(Object.assign({user_id:uid,content:''},extra,q));if(error){toast(error.message.includes('row-level')?'Você está de castigo neste servidor':'Não foi possível enviar');return false}SND.send();return true}
-$('cf').onsubmit=async e=>{e.preventDefault();const v=$('in').value.trim();if(!v)return;$('in').value='';sendMsg({content:v.slice(0,2000)})};
+function clearReply(){replyTo=null;$('replybar').style.display='none';$('replybar').firstElementChild.textContent=''}
+function setReply(g){replyTo=g;$('replybar').firstElementChild.textContent='Respondendo a '+name(g.user_id)+': '+(g.content||'mídia').slice(0,120);$('replybar').style.display='flex';$('in').focus()}
+ $('cancelReply').onclick=clearReply;
+ $('cf').onsubmit=async e=>{e.preventDefault();const v=$('in').value.trim();if(!v)return;const r=replyTo;$('in').value='';if(await sendMsg({content:v.slice(0,2000),reply_to:r?.id||null}))clearReply()};
 
 const deb=(f,ms)=>{let t;return()=>{clearTimeout(t);t=setTimeout(f,ms)}};const dSocial=deb(()=>refreshSocial(),250),dServers=deb(()=>refreshServers(),250);
 function realtime(){dbch=sb.channel('db')
  .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},pl=>{const m=pl.new,q=curQ(),mine=q&&((q.channel_id&&m.channel_id==q.channel_id)||(q.dm_key&&m.dm_key==q.dm_key));
   if(mine){if(!msgs.find(x=>x.id==m.id)){msgs.push(m);if(msgs.length>400)msgs=msgs.slice(-300);drawMsgs();ensure([m.user_id]).then(drawMsgs)}if(m.user_id!=uid)SND.recv()}
   else if(m.user_id!=uid&&m.dm_key){SND.recv();ensure([m.user_id]).then(()=>toast('Mensagem de '+name(m.user_id)))}})
- .on('postgres_changes',{event:'DELETE',schema:'public',table:'messages'},pl=>{if(pl.old?.id){msgs=msgs.filter(m=>m.id!=pl.old.id);drawMsgs()}})
+ .on('postgres_changes',{event:'DELETE',schema:'public',table:'messages'},pl=>{if(pl.old?.id){msgs=msgs.filter(m=>m.id!=pl.old.id);reactions=reactions.filter(r=>r.message_id!=pl.old.id);drawMsgs()}})
+ .on('postgres_changes',{event:'*',schema:'public',table:'message_reactions'},pl=>{const id=pl.new?.message_id||pl.old?.message_id;if(id&&msgs.some(m=>m.id==id))loadReactions(msgs.map(m=>m.id)).then(drawMsgs)})
  .on('postgres_changes',{event:'*',schema:'public',table:'friendships'},dSocial)
  .on('postgres_changes',{event:'*',schema:'public',table:'server_members'},dServers)
  .on('postgres_changes',{event:'*',schema:'public',table:'channels'},dServers)
@@ -393,20 +399,23 @@ function drawMain(){const home=sv=='home',c=home?null:cur(),isFr=home&&!dmId,vc=
  if(isFr)drawFr();if(vc){drawVc(c.id);drawSoundboard()}if(dmCall)drawVc(dc);
  if(tx){$('in').placeholder=home?'Mensagem para '+name(dmId):'Mensagem em #'+c.name;drawMsgs()}}
 let mBase='',mIds=[];
-function mrow(g,m,near){const okU=u=>/^https?:\/\//.test(u||'');const d=E('div','m'),b=E('div'),h=E('div');h.append(E('b','',name(g.user_id)),E('small','',new Date(g.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})));if(g.user_id==uid||(sv!='home'&&isAdmin()))h.append(btn('Excluir','danger',()=>deleteMessage(g)));b.append(h);
+ function mrow(g,m,near){const okU=u=>/^https?:\/\//.test(u||'');const d=E('div','m'),b=E('div'),h=E('div','mhead');h.append(E('b','',name(g.user_id)),E('small','',new Date(g.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})));const acts=E('span','macts');acts.append(btn('Responder','',()=>setReply(g)));['👍','❤️','😂','😮','😢'].forEach(e=>acts.append(btn(e,'',()=>toggleReaction(g,e))));if(g.user_id==uid||(sv!='home'&&isAdmin()))acts.append(btn('Excluir','danger',()=>deleteMessage(g)));h.append(acts);b.append(h);
+ const quoted=g.reply_to&&msgs.find(x=>x.id==g.reply_to);if(quoted)b.append(E('div','mquote','↪ '+name(quoted.user_id)+': '+(quoted.content||'mídia').slice(0,140)));
  if(g.content)b.append(E('div','',g.content));
  if(okU(g.image_url)){const im=E('img','mimg');im.loading='lazy';im.decoding='async';im.src=g.image_url;im.alt='foto';im.onclick=()=>{$('lbi').src=g.image_url;$('lb').classList.add('s')};im.onload=()=>{if(near)m.scrollTop=1e9};b.append(im)}
  if(g.sticker){if(g.sticker.startsWith('e:'))b.append(E('div','bigem',g.sticker.slice(2)));else if(okU(g.sticker)){const im=E('img','stk1');im.loading='lazy';im.decoding='async';im.src=g.sticker;im.alt='figurinha';b.append(im)}}
+ const rr=reactions.filter(r=>r.message_id==g.id),groups={};rr.forEach(r=>(groups[r.emoji]??=[]).push(r.user_id));if(rr.length){const bar=E('div','mreact');Object.entries(groups).forEach(([e,us])=>{const z=btn(e+' '+us.length,us.includes(uid)?'on':'',()=>toggleReaction(g,e));bar.append(z)});b.append(bar)}
  d.append(mkAv(g.user_id),b);d.oncontextmenu=e=>{e.preventDefault();openMemberMenu(g.user_id,e.clientX,e.clientY)};return d}
 function drawMsgs(){const m=$('msgs');if(m.style.display=='none')return;const q=curQ();
  if(!q){m.innerHTML='';mBase='';mIds=[];return}
- const base=(q.channel_id||q.dm_key)+'|'+(sv!='home'&&isAdmin()?1:0)+'|'+uid+'|'+[...new Set(msgs.map(g=>g.user_id))].map(u=>{const p=P[u]||{};return u+(p.username||'')+(p.avatar_url||'')+(p.effect||0)}).join(';'),ids=msgs.map(g=>g.id);
+ const base=(q.channel_id||q.dm_key)+'|'+(sv!='home'&&isAdmin()?1:0)+'|'+uid+'|'+[...new Set(msgs.map(g=>g.user_id))].map(u=>{const p=P[u]||{};return u+(p.username||'')+(p.avatar_url||'')+(p.effect||0)}).join(';')+'|'+msgs.map(g=>g.reply_to||'').join(',')+'|'+reactions.map(r=>r.message_id+r.user_id+r.emoji).join(';'),ids=msgs.map(g=>g.id);
  if(base==mBase&&ids.length==mIds.length&&ids.every((x,i)=>x==mIds[i]))return;
  const near=m.scrollHeight-m.scrollTop-m.clientHeight<140;
  if(base==mBase&&mIds.length&&ids.length>mIds.length&&mIds.every((x,i)=>x==ids[i])){for(let i=mIds.length;i<msgs.length;i++)m.append(mrow(msgs[i],m,near));mIds=ids;if(near)m.scrollTop=1e9;return}
  m.innerHTML='';mBase=base;mIds=ids;if(!msgs.length)m.append(E('div','empty','Nenhuma mensagem ainda. Diga oi 👋'));
  msgs.forEach(g=>m.append(mrow(g,m,near)));if(near)m.scrollTop=1e9}
-async function deleteMessage(g){if(!confirm('Excluir esta mensagem?'))return;const {error}=await sb.rpc('delete_message',{mid:g.id});if(error){toast('Não foi possível excluir: '+error.message);return}msgs=msgs.filter(m=>m.id!=g.id);drawMsgs();toast('Mensagem excluída')}
+ async function toggleReaction(g,emoji){const old=reactions.find(r=>r.message_id==g.id&&r.user_id==uid&&r.emoji==emoji);const q=old?sb.from('message_reactions').delete().eq('id',old.id):sb.from('message_reactions').insert({message_id:g.id,user_id:uid,emoji});const {error}=await q;if(error){toast('Não foi possível reagir a esta mensagem');return}await loadReactions(msgs.map(m=>m.id));drawMsgs()}
+ async function deleteMessage(g){if(!confirm('Excluir esta mensagem?'))return;const {error}=await sb.rpc('delete_message',{mid:g.id});if(error){toast('Não foi possível excluir: '+error.message);return}msgs=msgs.filter(m=>m.id!=g.id);reactions=reactions.filter(r=>r.message_id!=g.id);drawMsgs();toast('Mensagem excluída')}
 function voiceState(p){if(p.deaf)return ['sem ouvir','deaf','◉'];if(p.mute)return ['microfone mutado','muted','×'];if(p.speaking)return ['falando','talk','●'];return ['ouvindo','', '●']}
 const svg=(d,z)=>'<svg viewBox="0 0 24 24" width="'+z+'" height="'+z+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
 const IC={
