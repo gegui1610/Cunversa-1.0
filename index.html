@@ -62,21 +62,36 @@ button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;bo
 .lbl{position:absolute;left:10px;bottom:8px;font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(0,0,0,.6)}
 .tiles{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
 .tile{width:110px;text-align:center;font-size:13px}.tile .avw{width:72px;height:72px;margin:0 auto 8px}.tile .av{width:72px;height:72px;font-size:22px}
+.tile.talking .avw{box-shadow:0 0 0 3px #30d158,0 0 0 7px rgba(48,209,88,.18),0 0 28px rgba(48,209,88,.65)}
+.voice-state{display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:600;background:rgba(255,255,255,.08);color:var(--mu);white-space:nowrap}
+.voice-state.talk{background:rgba(48,209,88,.18);color:#72f39a}.voice-state.muted{background:rgba(255,69,58,.16);color:#ff817a}.voice-state.deaf{background:rgba(255,190,60,.16);color:#ffd36b}
+.voice-state .vdot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
 .tile.sp .avw{box-shadow:0 0 0 3px #30d158,0 0 28px rgba(48,209,88,.45)}
 .ctl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.ctl button{padding:12px 20px;border-radius:999px;font-weight:500}
 #mem{width:210px;padding:12px;overflow:auto}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;place-items:center;z-index:9;padding:16px}
 .ov.s{display:grid}
 .box{width:min(440px,100%);max-height:100%;overflow:auto;padding:22px;gap:14px;display:flex;flex-direction:column}
-.box h3{font-size:18px}.rw{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
-select{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--ln);background:var(--p2);outline:0}
+.box h3{font-size:19px;background:linear-gradient(180deg,#fff 30%,#8a8a92);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.rw{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+select{width:100%;padding:11px 40px 11px 16px;border-radius:99px;border:1px solid var(--gb);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 16px center,linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 4px 12px rgba(0,0,0,.4);outline:0;-webkit-appearance:none;appearance:none;cursor:pointer;color:var(--tx);transition:border-color .25s,box-shadow .25s}
+select:hover,select:focus{border-color:rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 22px rgba(255,255,255,.1)}
+option{background:#151518;color:#f4f4f6}
 .sw{appearance:none;-webkit-appearance:none;width:44px;height:26px;border-radius:99px;background:#3a3a3f;position:relative;cursor:pointer;transition:background .25s;flex:none}
 .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
 .sw:checked{background:#30d158}.sw:checked::after{transform:translateX(18px)}
-input[type=range]{width:100%;accent-color:#fff}
-.meter{height:8px;border-radius:9px;background:#222;position:relative;overflow:hidden;margin-bottom:8px}
-#mt{height:100%;width:0;background:linear-gradient(90deg,#30d158,#fff);transition:width .05s}#mk{position:absolute;top:0;bottom:0;width:2px;background:#ff453a}
+
+
+.box .card{margin:0}.card .rw{padding:6px 0}
+.sens{position:relative;height:38px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--ln);box-shadow:inset 0 1px 4px rgba(0,0,0,.6);overflow:hidden;margin:6px 0 8px}
+#mt{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,rgba(48,209,88,.5),rgba(255,255,255,.8));transition:width .05s}
+.sens input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:ew-resize}
+.sens input::-webkit-slider-runnable-track{background:transparent;height:100%}
+.sens input::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height:100%;border-radius:4px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.9)}
+.sens input::-moz-range-track{background:transparent;height:100%}
+.sens input::-moz-range-thumb{width:8px;height:100%;border:0;border-radius:4px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.9)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:10px 18px;border-radius:99px;z-index:50;display:none;max-width:90vw;text-align:center}
+.ctx{position:fixed;z-index:60;display:none;min-width:220px;padding:8px;border-radius:16px;background:linear-gradient(180deg,#202025,#101013);border:1px solid var(--gb);box-shadow:0 18px 50px rgba(0,0,0,.7)}
+.ctx.s{display:grid;gap:3px}.ctx button{width:100%;text-align:left;padding:9px 11px;border-radius:10px;background:transparent;color:var(--tx);font-size:13px}.ctx button:hover{background:rgba(255,255,255,.1)}.ctx button.danger{color:#ff817a}.ctx .sep{height:1px;background:var(--ln);margin:4px 0}.ctx .vol{padding:8px 10px;font-size:12px;color:var(--mu)}.ctx input{width:100%;accent-color:#fff}
 .hint{font-size:12px;color:var(--mu)}
 .bn{height:120px;border-radius:16px;background:linear-gradient(135deg,#2c2c33,#0e0e11) center/cover;position:relative;border:1px solid var(--ln);flex:none}
 .bn button{position:absolute;right:10px;bottom:10px;padding:6px 14px;border-radius:99px;font-size:13px}
@@ -121,6 +136,19 @@ input[type=range]{width:100%;accent-color:#fff}
 .lgb{width:84px;height:84px;margin:0 auto;filter:drop-shadow(0 0 22px rgba(255,255,255,.4));animation:fl 3.2s ease-in-out infinite}
 .tabs{display:flex;gap:8px}.tabs button{flex:1;padding:9px;border-radius:99px;font-weight:500}
 #setup ol{text-align:left;padding-left:20px;font-size:14px;display:grid;gap:6px}#setup code{background:#222;padding:1px 6px;border-radius:6px}
+.mimg{display:block;max-width:min(320px,100%);max-height:280px;border-radius:14px;margin-top:6px;cursor:zoom-in;border:1px solid var(--ln)}
+.stk1{display:block;width:140px;max-height:140px;object-fit:contain;margin-top:4px}
+.bigem{font-size:64px!important;line-height:1.1;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+#cf{align-items:center}
+#stk{display:none;position:absolute;left:14px;bottom:70px;width:min(360px,calc(100% - 28px));max-height:300px;overflow:auto;padding:12px;z-index:5;border-radius:18px;background:#121215;border:1px solid var(--gb);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+#stk.s{display:block}.stkg{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:6px}
+.stkc{height:56px;border-radius:12px;background:rgba(255,255,255,.05);font-size:30px;display:grid;place-items:center;transition:transform .2s cubic-bezier(.3,1.6,.5,1),background .2s}
+.stkc:hover{transform:scale(1.15);background:rgba(255,255,255,.12)}.stkc img{max-width:48px;max-height:48px;object-fit:contain}.stkc.add{font-size:26px;color:var(--mu)}
+#vc.mini{flex:none;padding:12px 16px;gap:12px;border-bottom:1px solid var(--ln);max-height:48vh}
+#vc.mini .tiles{gap:12px}#vc.mini .tile{width:84px}#vc.mini .tile .avw{width:52px;height:52px;margin-bottom:4px}#vc.mini .tile .av{width:52px;height:52px;font-size:18px}
+#vc.mini #scr{flex:none}#vc.mini .scr video{max-height:34vh}#vc.mini .empty{padding:0}
+#ring{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:40;display:none;flex-direction:column;align-items:center;gap:8px;padding:20px 28px;border-radius:24px;background:linear-gradient(180deg,#1a1a1e,#0d0d10);border:1px solid var(--gb);box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(48,209,88,.15);animation:ringp 1.2s ease-in-out infinite}
+#ring.s{display:flex}@keyframes ringp{50%{box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 64px rgba(48,209,88,.45)}}
 @media(max-width:820px){#mem{display:none}#side{width:200px}}
 @media(max-width:560px){#rail{width:56px}.sv,.lg{width:40px;height:40px}#side{width:150px}.ctl button{padding:10px 14px}}
 </style>
@@ -141,28 +169,32 @@ input[type=range]{width:100%;accent-color:#fff}
 
 <div id="app">
 <nav id="rail" class="pane"></nav>
-<aside id="side" class="pane"><h2><span id="sn"></span><button class="ib glass" id="sset" title="Configurações do servidor">⚙</button><button class="ib glass" id="add" title="Novo canal">+</button></h2><div id="chs"></div>
+<aside id="side" class="pane"><h2><span id="sn"></span><button class="ib glass" id="sset" title="Configurações do servidor">⋯</button><button class="ib glass" id="add" title="Novo canal">+</button></h2><div id="chs"></div>
 <div class="me"><div id="mavw"></div><div style="flex:1;min-width:0;font-size:13px"><div id="mn" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div class="hint" id="st">online</div></div>
 <button class="ib glass" id="bm" title="Microfone" data-q="1">🎙</button><button class="ib glass" id="bd" title="Fones" data-q="1">🎧</button><button class="ib glass" id="bs" title="Ajustes de voz">⚙</button></div></aside>
-<main id="main" class="pane"><div id="hdw"><span id="hd"></span></div>
+<main id="main" class="pane"><div id="hdw" style="display:flex;align-items:center;gap:10px"><span id="hd" style="flex:1"></span><button class="glass sm" id="callb" style="display:none">📞 Ligar</button></div>
 <div id="fr"><div class="card"><div class="lb">Seu código de amigo</div><div class="row"><b class="code" id="mycode">----</b><button class="glass sm" id="cpc">Copiar</button></div><div class="hint" style="margin-top:6px">Passe esse código para um amigo adicionar você.</div></div>
 <form class="card" id="addf"><div class="lb">Adicionar amigo</div><div class="row"><input class="fi" id="addc" placeholder="0000-0000" inputmode="numeric" maxlength="9" autocomplete="off"><button class="glass on sm" data-q="1">Adicionar</button></div></form>
 <div id="frl"></div></div>
 <div id="msgs"></div>
-<div id="vc"><div id="scr"></div><div class="tiles" id="tl"></div><div class="ctl"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div></div>
-<form id="cf"><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
+<div id="vc"><div id="scr"></div><div class="tiles" id="tl"></div><div class="ctl"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="sbb" data-q="1">Sons</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="ctl" style="display:none;width:100%"></div></div>
+<div id="stk"></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
 <aside id="mem" class="pane"><div class="lb" id="mlb">Online agora</div><div id="ml"></div></aside>
 </div>
 
 <div class="ov" id="set"><div class="box pane"><h3>Ajustes de voz</h3>
-<div><div class="hint" style="margin-bottom:6px">Microfone</div><select id="dev"></select></div>
+<div class="card"><div class="lb">Microfone</div><select id="dev"></select></div>
+<div class="card"><div class="lb">Qualidade do áudio</div>
 <label class="rw">Supressão de ruído<input type="checkbox" class="sw" id="ns"></label>
 <label class="rw">Cancelamento de eco<input type="checkbox" class="sw" id="ec"></label>
-<label class="rw">Volume automático<input type="checkbox" class="sw" id="agc"></label>
-<label class="rw">Isolamento de voz (porta de ruído)<input type="checkbox" class="sw" id="gt"></label>
-<div><div class="hint" style="margin-bottom:6px">Sensibilidade: só passa som acima da linha vermelha</div><div class="meter"><div id="mt"></div><div id="mk"></div></div><input type="range" id="th" min="1" max="60"></div>
-<label class="rw">Sons do app<input type="checkbox" class="sw" id="sn2"></label>
-<div class="ctl"><button class="glass" id="tst">Ouvir meu microfone</button><button class="glass on" id="cls">Pronto</button></div><div class="hint">Use fones ao testar para não dar eco.</div></div></div>
+<label class="rw">Volume automático<input type="checkbox" class="sw" id="agc"></label></div>
+<div class="card"><div class="lb">Isolamento de voz</div>
+<label class="rw">Porta de ruído<input type="checkbox" class="sw" id="gt"></label>
+<div class="sens"><div id="mt"></div><input type="range" id="th" min="1" max="100"></div>
+<div class="rw hint"><span>← Mais sensível</span><span id="gst">—</span><span>Menos sensível →</span></div><div id="mk" style="display:none"></div>
+<div class="hint" style="margin-top:6px">Arraste a barra branca: só o som que passar dela é enviado. Fale e veja a barra encher.</div></div>
+<div class="card"><label class="rw">Sons do app<input type="checkbox" class="sw" id="sn2"></label></div>
+<div class="ctl"><button class="glass" id="tst">Ouvir meu microfone</button><button class="glass on" id="cls">Pronto</button></div><div class="hint" style="text-align:center">Use fones ao testar para não dar eco.</div></div></div>
 
 <div class="ov" id="ask"><form class="box pane" id="af"><h3>Novo canal</h3><input class="fi" id="ai" maxlength="30" placeholder="nome-do-canal" autocomplete="off"><select id="ay"><option value="text"># Texto</option><option value="voice">♪ Voz</option></select>
 <div class="ctl"><button type="button" class="glass" id="ax">Cancelar</button><button class="glass on">Criar</button></div></form></div>
@@ -174,8 +206,10 @@ input[type=range]{width:100%;accent-color:#fff}
 
 <div class="ov" id="sm"><div class="box pane" id="smb"></div></div>
 <div class="ov" id="pf"><div class="box pane" id="pfb"></div></div>
-<input type="file" id="fl" accept="image/*" hidden>
+<div id="ring"></div><div class="ov" id="lb"><img id="lbi" alt="" style="max-width:96vw;max-height:92vh;border-radius:14px"></div>
+<input type="file" id="fl" accept="image/*" hidden><input type="file" id="sndf" accept="audio/*" hidden>
 <div id="toast" class="glass"></div>
+<div id="ctx" class="ctx"></div>
 
 <script>
 /* ===== CONFIGURAÇÃO (edite aqui) ===== */
@@ -216,9 +250,9 @@ const FX=[
 ['Órbita dourada','orbit','#ffc400'],['Brilho','shine'],['Flutuar','float','#7c4dff'],['Faíscas','spark','#ffd54f'],['Neon piscando','flicker','#ff3df2']];
 
 /* ===== estado ===== */
-let sb,uid=null,me={},P={},fr=[],srv=[],chans=[],mems=[],msgs=[],lobby=null,myKey='',pres={},peers=[],dbch=null;
+let sb,uid=null,me={},P={},fr=[],srv=[],chans=[],mems=[],msgs=[],sounds=[],lobby=null,myKey='',pres={},peers=[],dbch=null;
 let sv='home',ch=null,dmId=null,booted=false,wtok=0,tgt=null,pfU=null;
-let vcCh=null,pcs={},auds={},mic=null,muted=false,deaf=false,scr=null,vids={},vel={};
+let vcCh=null,pcs={},auds={},mic=null,muted=false,deaf=false,scr=null,vids={},vel={},peerVolumes={};
 const dmKey=(a,b)=>[a,b].sort().join('_');
 const name=u=>(P[u]&&P[u].username)||'Amigo';
 const hue=u=>{let h=0;for(const c of String(u))h=(h*31+c.charCodeAt(0))%360;return 'hsl('+h+',55%,42%)'};
@@ -227,6 +261,10 @@ const isOn=u=>peers.some(p=>p.uid==u);
 const inVoice=id=>peers.filter(p=>p.voice===id);
 const cur=()=>chans.find(c=>c.id==ch);
 const curSrv=()=>srv.find(s=>s.id==sv);
+const isAdmin=()=>{const s=curSrv(),r=mems.find(m=>m.user_id==uid)?.role;return !!s&&(s.owner==uid||r=='owner'||r=='admin')};
+const memberRole=u=>mems.find(m=>m.user_id==u)?.role||'member';
+const memberMuted=u=>{const m=mems.find(x=>x.user_id==u);return !!m?.muted_until&&new Date(m.muted_until)>new Date()};
+const memberPunished=u=>{const m=mems.find(x=>x.user_id==u);return !!m?.punishment_until&&new Date(m.punishment_until)>new Date()};
 const fmt=c=>{const d=String(c||'').replace(/\D/g,'').slice(0,8);return d.length>4?d.slice(0,4)+'-'+d.slice(4):d};
 async function ensure(ids){const n=[...new Set(ids)].filter(u=>u&&!P[u]);if(!n.length)return;const {data}=await sb.from('profiles').select('*').in('id',n);(data||[]).forEach(p=>P[p.id]=p)}
 
@@ -259,12 +297,12 @@ async function boot(user){uid=user.id;$('auth').classList.remove('s');$('app').s
  let p=null;for(let i=0;i<8&&!p;i++){const r=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();p=r.data;if(!p)await new Promise(r=>setTimeout(r,500))}
  if(!p){toast('Perfil não encontrado. Rode o schema.sql no Supabase.');return}
  me=p;P[uid]=p;draw();
- await Promise.all([refreshSocial(),refreshServers()]);realtime();lobbyInit();draw()}
+ await Promise.all([refreshSocial(),refreshServers(),loadStk().catch(()=>{})]);realtime();lobbyInit();draw()}
 function teardown(){leaveVoice(true);try{sb.removeAllChannels()}catch(e){}lobby=null;dbch=null;me={};P={};fr=[];srv=[];chans=[];mems=[];msgs=[];peers=[];sv='home';ch=null;dmId=null;uid=null}
 
 /* ===== dados ===== */
 async function refreshSocial(){const {data}=await sb.from('friendships').select('*');fr=data||[];await ensure(fr.flatMap(r=>[r.requester,r.addressee]));draw()}
-async function refreshMembers(){if(sv=='home')return;const {data}=await sb.from('server_members').select('user_id,role').eq('server_id',sv);mems=data||[];await ensure(mems.map(m=>m.user_id))}
+async function refreshMembers(){if(sv=='home')return;const {data}=await sb.from('server_members').select('user_id,role,muted_until,punishment_until').eq('server_id',sv);mems=data||[];await ensure(mems.map(m=>m.user_id));const sr=await sb.from('server_sounds').select('*').eq('server_id',sv).order('created_at',{ascending:false});sounds=sr.data||[];drawSoundboard()}
 async function refreshServers(){const {data}=await sb.from('server_members').select('role,servers(id,name,icon_url,owner,invite_code)').eq('user_id',uid);
  srv=(data||[]).map(r=>Object.assign({role:r.role},r.servers)).filter(s=>s.id);
  chans=srv.length?((await sb.from('channels').select('*').in('server_id',srv.map(s=>s.id)).order('position')).data||[]):[];
@@ -277,8 +315,8 @@ function curQ(){if(sv=='home')return dmId?{dm_key:dmKey(uid,dmId)}:null;const c=
 async function watch(){const t=++wtok;msgs=[];drawMsgs();const q=curQ();if(!q)return;
  const {data}=await sb.from('messages').select('*').match(q).order('created_at',{ascending:false}).limit(80);if(t!=wtok)return;
  msgs=(data||[]).reverse();await ensure(msgs.map(m=>m.user_id));if(t==wtok)drawMsgs()}
-$('cf').onsubmit=async e=>{e.preventDefault();const v=$('in').value.trim(),q=curQ();if(!v||!q)return;$('in').value='';SND.send();
- const {error}=await sb.from('messages').insert(Object.assign({user_id:uid,content:v.slice(0,2000)},q));if(error)toast('Não foi possível enviar')};
+async function sendMsg(extra){const q=curQ();if(!q)return false;if(sv!='home'&&memberPunished(uid)){toast('Você está de castigo neste servidor');return false}const {error}=await sb.from('messages').insert(Object.assign({user_id:uid,content:''},extra,q));if(error){toast(error.message.includes('row-level')?'Você está de castigo neste servidor':'Não foi possível enviar');return false}SND.send();return true}
+$('cf').onsubmit=async e=>{e.preventDefault();const v=$('in').value.trim();if(!v)return;$('in').value='';sendMsg({content:v.slice(0,2000)})};
 
 function realtime(){dbch=sb.channel('db')
  .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},pl=>{const m=pl.new,q=curQ(),mine=q&&((q.channel_id&&m.channel_id==q.channel_id)||(q.dm_key&&m.dm_key==q.dm_key));
@@ -292,10 +330,14 @@ function realtime(){dbch=sb.channel('db')
  .subscribe()}
 
 /* ===== presença + sinalização de voz ===== */
-function lobbyInit(){myKey=uid+':'+Math.random().toString(36).slice(2,7);pres={uid,voice:null,mute:false,share:false};
+function lobbyInit(){myKey=uid+':'+Math.random().toString(36).slice(2,7);pres={uid,voice:null,mute:false,deaf:false,speaking:false,share:false};
  lobby=sb.channel('lobby',{config:{presence:{key:myKey},broadcast:{self:false}}});
- lobby.on('presence',{event:'sync'},()=>{const s=lobby.presenceState();peers=Object.entries(s).map(([k,a])=>Object.assign({peer:k},a[a.length-1]));ensure(peers.map(p=>p.uid)).then(draw);sync();draw()})
+ lobby.on('presence',{event:'sync'},()=>{const s=lobby.presenceState();peers=Object.entries(s).map(([k,a])=>Object.assign({peer:k},a[a.length-1]));ensure(peers.map(p=>p.uid)).then(draw);sync();chkRing();draw()})
   .on('broadcast',{event:'sig'},({payload:d})=>{if(!vcCh||!d||d.to!==myKey||d.vc!==vcCh)return;onSig(d.from,d).catch(()=>{})})
+  .on('broadcast',{event:'ring'},({payload:d})=>{if(d&&d.to===uid)showRing(d)})
+  .on('broadcast',{event:'moderation'},({payload:d})=>{if(d&&d.to===uid&&d.kind=='mute'&&d.value){setMute(true);toast('Você foi silenciado por um administrador') }})
+  .on('broadcast',{event:'call-kick'},({payload:d})=>{if(d&&d.to===uid&&d.vc===vcCh){toast('Você foi retirado da chamada por um administrador');leaveVoice()}})
+  .on('broadcast',{event:'ringend'},({payload:d})=>{if(!d||d.to!==uid)return;if(inRing&&inRing.vc==d.vc)hideRing();if(d.declined&&ringT&&ringT.vc==d.vc){toast(name(d.from)+' recusou a chamada');stopRing(false);leaveVoice()}})
   .subscribe(st=>{if(st=='SUBSCRIBED')lobby.track(pres)})}
 const setPres=p=>{Object.assign(pres,p);lobby&&lobby.track(pres)};
 
@@ -312,21 +354,31 @@ function drawSide(){const home=sv=='home',s=curSrv();$('sn').textContent=home?'C
  [['Texto','text'],['Voz','voice']].forEach(([t,k])=>{const a=chans.filter(x=>x.server_id==sv&&x.type==k);if(!a.length)return;c.append(E('div','lb',t));
   a.forEach(x=>{const b=E('button','ch'+(ch==x.id?' sel':''),(k=='text'?'# ':'♪ ')+x.name);b.onclick=()=>{ch=x.id;watch();draw()};c.append(b);
    if(k=='voice')inVoice(x.id).forEach(p=>{const d=E('div','vu');d.append(E('span','dot'),name(p.uid)+(p.share?' 🖥':'')+(p.mute?' 🔇':''));c.append(d)})})})}
+const vcId=()=>{if(sv=='home')return dmId?'dm:'+dmKey(uid,dmId):null;const c=cur();return c&&c.type=='voice'?c.id:null};
 function drawMain(){const home=sv=='home',c=home?null:cur(),isFr=home&&!dmId,vc=c&&c.type=='voice',tx=(c&&c.type=='text')||(home&&dmId);
+ const dc=home&&dmId?'dm:'+dmKey(uid,dmId):null,dmCall=!!dc&&(vcCh==dc||inVoice(dc).length>0);
  $('hd').textContent=isFr?'Amigos':home?'@ '+name(dmId):c?(vc?'♪ ':'# ')+c.name:CFG.NAME;
- $('fr').style.display=isFr?'block':'none';$('vc').style.display=vc?'flex':'none';$('msgs').style.display=tx?'flex':'none';$('cf').style.display=tx?'flex':'none';
- if(isFr)drawFr();if(vc)drawVc(c);if(tx){$('in').placeholder=home?'Mensagem para '+name(dmId):'Mensagem em #'+c.name;drawMsgs()}}
+ $('fr').style.display=isFr?'block':'none';$('vc').style.display=vc||dmCall?'flex':'none';$('vc').classList.toggle('mini',dmCall);$('msgs').style.display=tx?'flex':'none';$('cf').style.display=tx?'flex':'none';
+ $('callb').style.display=home&&dmId&&!dmCall?'':'none';
+ if(isFr)drawFr();if(vc)drawVc(c.id);if(dmCall)drawVc(dc);
+ if(tx){$('in').placeholder=home?'Mensagem para '+name(dmId):'Mensagem em #'+c.name;drawMsgs()}}
 function drawMsgs(){const m=$('msgs');if(m.style.display=='none')return;const near=m.scrollHeight-m.scrollTop-m.clientHeight<140;m.innerHTML='';
- if(!curQ()){return}if(!msgs.length)m.append(E('div','empty','Nenhuma mensagem ainda. Diga oi 👋'));
- msgs.forEach(g=>{const d=E('div','m'),b=E('div'),h=E('div');h.append(E('b','',name(g.user_id)),E('small','',new Date(g.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})));b.append(h,E('div','',g.content));d.append(mkAv(g.user_id),b);m.append(d)});if(near)m.scrollTop=1e9}
-function drawVc(c){const t=$('tl');t.innerHTML='';const all=inVoice(c.id);
- all.forEach(p=>{const d=E('div','tile'+(p.peer==myKey?' me':''));d.append(mkAv(p.uid),E('div','',name(p.uid)+(p.mute?' 🔇':'')+(p.share?' 🖥':'')));t.append(d)});
- if(!all.length)t.append(E('div','empty','Ninguém na sala ainda.\nClique em "Entrar na chamada".'));
- const j=vcCh==c.id;$('vl').textContent=j?'Sair da chamada':'Entrar na chamada';$('vl').className='glass '+(j?'red':'on');$('vm').style.display=j?'':'none';$('vm').textContent=muted?'Reativar mic':'Silenciar';
+ if(!curQ())return;if(!msgs.length)m.append(E('div','empty','Nenhuma mensagem ainda. Diga oi 👋'));const okU=u=>/^https?:\/\//.test(u||'');
+ msgs.forEach(g=>{const d=E('div','m'),b=E('div'),h=E('div');h.append(E('b','',name(g.user_id)),E('small','',new Date(g.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})));b.append(h);
+  if(g.content)b.append(E('div','',g.content));
+  if(okU(g.image_url)){const im=E('img','mimg');im.src=g.image_url;im.alt='foto';im.onclick=()=>{$('lbi').src=g.image_url;$('lb').classList.add('s')};im.onload=()=>{if(near)m.scrollTop=1e9};b.append(im)}
+  if(g.sticker){if(g.sticker.startsWith('e:'))b.append(E('div','bigem',g.sticker.slice(2)));else if(okU(g.sticker)){const im=E('img','stk1');im.src=g.sticker;im.alt='figurinha';b.append(im)}}
+  d.append(mkAv(g.user_id),b);d.oncontextmenu=e=>{e.preventDefault();openMemberMenu(g.user_id,e.clientX,e.clientY)};m.append(d)});if(near)m.scrollTop=1e9}
+function voiceState(p){if(p.deaf)return ['sem ouvir','deaf','◉'];if(p.mute)return ['microfone mutado','muted','×'];if(p.speaking)return ['falando','talk','●'];return ['ouvindo','', '●']}
+function drawVc(id){const t=$('tl');t.innerHTML='';const all=inVoice(id);
+ all.forEach(p=>{const local=p.peer==myKey,st=voiceState(local?pres:p),d=E('div','tile'+(local?' me ':' ')+(st[1]=='talk'?'talking':''));const vs=E('div','voice-state '+st[1]);vs.append(E('span','vdot',st[2]),E('span','',st[0]));d.append(mkAv(p.uid),E('div','',name(p.uid)+(p.share?' 🖥':'')),vs);t.append(d)});
+ if(ringT&&ringT.vc==id)t.append(E('div','empty','Chamando '+name(ringT.to)+'…'));
+ else if(!all.length)t.append(E('div','empty','Ninguém na sala ainda.\nClique em "Entrar na chamada".'));
+ const j=vcCh==id;$('vl').textContent=j?(id.startsWith('dm:')?'Desligar':'Sair da chamada'):(id.startsWith('dm:')?'Atender':'Entrar na chamada');$('vl').className='glass '+(j?'red':'on');$('vm').style.display=j?'':'none';$('vm').textContent=muted?'Reativar mic':'Silenciar';
  $('vsh').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?'':'none';$('vsh').textContent=scr?'Parar compartilhamento':'Compartilhar tela';$('vsh').className='glass'+(scr?' on':'')}
 function drawMembers(){const ml=$('ml');ml.innerHTML='';let ids;
  if(sv=='home'){$('mlb').textContent='Amigos online';ids=friendIds().filter(isOn)}else{$('mlb').textContent='Membros — '+mems.length;ids=mems.map(m=>m.user_id).sort((a,b)=>isOn(b)-isOn(a))}
- ids.forEach(u=>{const d=E('div','urow');d.style.cursor='pointer';const own=sv!='home'&&(mems.find(m=>m.user_id==u)||{}).role=='owner';d.append(mkAv(u),E('span','grow',name(u)+(own?' 👑':'')),E('span','dot'+(u==uid||isOn(u)?'':' off')));d.onclick=()=>openPF(u);ml.append(d)});
+ ids.forEach(u=>{const d=E('div','urow');d.style.cursor='pointer';const mm=mems.find(m=>m.user_id==u)||{},own=sv!='home'&&mm.role=='owner',vp=u==uid?pres:peers.find(p=>p.uid==u),flags=(memberMuted(u)?' 🔇':'')+(memberPunished(u)?' ⏳':'');const state=vp&&vp.voice?voiceState(vp):null;d.append(mkAv(u),E('span','grow',name(u)+(own?' 👑':'')+flags),state?E('span','voice-state '+state[1],state[0]):E('span','dot'+(u==uid||isOn(u)?'':' off')));d.onclick=()=>openPF(u);d.oncontextmenu=e=>{e.preventDefault();openMemberMenu(u,e.clientX,e.clientY)};ml.append(d)});
  if(sv=='home'&&!ids.length)ml.append(E('div','hint','Ninguém online.'));
  $('mn').textContent=me.username||'';$('mavw').replaceChildren(mkAv(uid))}
 const urow=(u,...btns)=>{const d=E('div','urow');d.append(mkAv(u),E('span','grow',name(u)+(isOn(u)?' · online':'')),...btns);return d};
@@ -345,6 +397,31 @@ $('addc').oninput=e=>{e.target.value=fmt(e.target.value)};
 $('addf').onsubmit=async e=>{e.preventDefault();const c=$('addc').value;if(c.length<9){toast('O código tem 8 números');return}await addFriend(c);$('addc').value=''};
 async function addFriend(code){const {data,error}=await sb.rpc('add_friend',{code});if(error){toast('Erro: '+error.message);return}
  toast({nao_encontrado:'Código não encontrado',voce_mesmo:'Esse é o seu próprio código',ja_amigos:'Vocês já são amigos',pedido_ja_enviado:'Pedido já enviado',pedido_enviado:'Pedido enviado!',amigos:'Agora vocês são amigos!'}[data]||data);if(data=='amigos'||data=='pedido_enviado')SND.ok();refreshSocial()}
+
+/* ===== fotos e figurinhas ===== */
+function fitB(f,max,png){return createImageBitmap(f).then(im=>{const k=Math.min(1,max/Math.max(im.width,im.height)),w=Math.round(im.width*k),h=Math.round(im.height*k),c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');if(!png){g.fillStyle='#111';g.fillRect(0,0,w,h)}g.drawImage(im,0,0,w,h);return new Promise(r=>c.toBlob(r,png?'image/png':'image/jpeg',.88))})}
+async function upMedia(blob,tag,type){const ext=type=='image/gif'?'gif':type=='image/png'?'png':'jpg',path=uid+'/'+tag+'-'+Date.now()+'.'+ext;const {error}=await sb.storage.from('media').upload(path,blob,{contentType:type,cacheControl:'31536000'});if(error)throw error;return sb.storage.from('media').getPublicUrl(path).data.publicUrl}
+async function sendImg(f){if(!curQ())return;if(!/^image\//.test(f.type)){toast('Escolha uma imagem');return}if(f.size>10*1024*1024){toast('Imagem maior que 10 MB');return}
+ toast('Enviando foto…');try{const gif=f.type=='image/gif',url=await upMedia(gif?f:await fitB(f,1280,false),'c',gif?'image/gif':'image/jpeg');await sendMsg({image_url:url})}catch(x){toast('Não deu para enviar a foto')}}
+let stk=[],stkTab='e';
+const EMO=['😂','🥹','😍','🔥','💀','🫡','🎉','❤️','👍','👎','🤝','🙏','😴','🤯','🥳','😎','🤡','👀','🫶','💯','🍕','🐰','✨','🌈','😭','🤔','😤','🫠'];
+function drawStk(){const p=$('stk');p.innerHTML='';const t=E('div','ctl');t.style.marginBottom='8px';
+ [['e','Emoji'],['m','Minhas figurinhas']].forEach(([k,l])=>{const b=E('button','glass sm'+(stkTab==k?' on':''),l);b.type='button';b.dataset.q='1';b.onclick=()=>{stkTab=k;drawStk()};t.append(b)});p.append(t);
+ const g=E('div','stkg');
+ if(stkTab=='e')EMO.forEach(e=>{const c=E('button','stkc',e);c.type='button';c.onclick=()=>{p.classList.remove('s');sendMsg({sticker:'e:'+e})};g.append(c)});
+ else{const add=E('button','stkc add','+');add.type='button';add.title='Adicionar figurinha';add.onclick=()=>pick('k');g.append(add);
+  stk.forEach(s=>{const c=E('button','stkc'),im=E('img');c.type='button';im.src=s.url;c.append(im);c.onclick=()=>{p.classList.remove('s');sendMsg({sticker:s.url})};c.oncontextmenu=ev=>{ev.preventDefault();if(confirm('Apagar esta figurinha?'))delStk(s)};g.append(c)});
+  if(!stk.length)p.append(E('div','hint','Toque em + para criar figurinhas com suas imagens (PNG com fundo transparente fica ótimo). Botão direito apaga.'))}
+ p.append(g)}
+async function loadStk(){const {data}=await sb.from('stickers').select('*').eq('user_id',uid).order('created_at',{ascending:false});stk=data||[]}
+async function addSticker(f){if(!/^image\//.test(f.type)){toast('Escolha uma imagem');return}if(f.size>3*1024*1024){toast('Figurinha maior que 3 MB');return}
+ try{const gif=f.type=='image/gif',url=await upMedia(gif?f:await fitB(f,320,true),'st',gif?'image/gif':'image/png');const {error}=await sb.from('stickers').insert({user_id:uid,url});if(error)throw error;await loadStk();drawStk();toast('Figurinha criada!');SND.ok()}catch(x){toast('Não deu para criar a figurinha')}}
+async function delStk(s){await sb.from('stickers').delete().eq('id',s.id);await loadStk();drawStk()}
+$('stb').onclick=()=>{const p=$('stk');if(p.classList.toggle('s'))drawStk()};
+$('att').onclick=()=>pick('c');
+$('in').onpaste=e=>{const f=[...(e.clipboardData&&e.clipboardData.files||[])].find(x=>/^image\//.test(x.type));if(f){e.preventDefault();sendImg(f)}};
+$('lb').onclick=()=>$('lb').classList.remove('s');
+document.addEventListener('click',e=>{if(!e.target.closest('#stk,#stb'))$('stk').classList.remove('s')});
 
 /* ===== servidores e canais ===== */
 $('nsx').onclick=()=>$('ns2').classList.remove('s');
@@ -366,11 +443,29 @@ function openSM(){const s=curSrv();if(!s)return;const own=s.owner==uid,b=$('smb'
  const mc=E('div','card');mc.append(E('div','lb','Membros — '+mems.length));mems.forEach(m=>mc.append(urow(m.user_id,...(own&&m.user_id!=uid?[btn('Remover','',async()=>{if(confirm('Remover '+name(m.user_id)+'?')){await sb.from('server_members').delete().eq('server_id',sv).eq('user_id',m.user_id);await refreshMembers();openSM()}})]:[]))));b.append(mc);
  const ft=E('div','ctl');ft.append(btn(own?'Excluir servidor':'Sair do servidor','red',async()=>{if(!confirm(own?'Excluir '+s.name+' para sempre?':'Sair de '+s.name+'?'))return;const q=own?sb.from('servers').delete().eq('id',sv):sb.from('server_members').delete().eq('server_id',sv).eq('user_id',uid);const {error}=await q;if(error){toast('Erro: '+error.message);return}$('sm').classList.remove('s');sv='home';ch=null;await refreshServers();draw()}),btn('Fechar','on',()=>$('sm').classList.remove('s')));b.append(ft);$('sm').classList.add('s')}
 
+function closeCtx(){$('ctx').classList.remove('s');$('ctx').innerHTML=''}
+function ctxBtn(label,fn,cls){const b=E('button',cls||'',label);b.onclick=()=>{closeCtx();fn()};return b}
+function peerVolume(u,v){peerVolumes[u]=Number(v)/100;Object.entries(auds).forEach(([pid,a])=>{if(pid.includes(u))a.volume=peerVolumes[u]});toast('Volume de '+name(u)+': '+v+'%')}
+function openMemberMenu(u,x,y){closeCtx();const c=$('ctx'),s=curSrv(),admin=isAdmin(),self=u==uid;const vol=E('div','vol');vol.append(E('div','',`Volume de ${name(u)}`));const range=document.createElement('input');range.type='range';range.min=0;range.max=200;range.value=Math.round((peerVolumes[u]||1)*100);range.oninput=()=>peerVolume(u,range.value);vol.append(range);c.append(ctxBtn('Ver perfil',()=>openPF(u)));if(!friendIds().includes(u)&&!self)c.append(ctxBtn('Adicionar amigo',()=>addFriend(P[u]?.friend_code||''),'on'));c.append(vol);
+ if(!admin||self){if(admin&&self)c.append(E('div','hint','Você não pode moderar sua própria conta'));positionCtx(c,x,y);return}
+ c.append(E('div','sep'),ctxBtn(memberMuted(u)?'Desmutar no servidor':'Silenciar no servidor',()=>moderateMute(u,memberMuted(u))));
+ const p=E('button','','Aplicar castigo');p.onclick=()=>{closeCtx();const secs=Number(prompt('Duração do castigo em segundos (0 remove o castigo):','60'));if(Number.isFinite(secs)&&secs>=0)moderatePunish(u,secs)};c.append(p);
+ const roles=E('div','vol');roles.append(E('div','',`Cargo atual: ${memberRole(u)}`));[['member','Membro'],['mod','Moderador'],['admin','Administrador']].forEach(([v,l])=>roles.append(ctxBtn('Dar cargo: '+l,()=>moderateRole(u,v),memberRole(u)==v?'on':'')));c.append(roles);
+ if(vcCh&&inVoice(vcCh).some(p=>p.uid==u))c.append(ctxBtn('Retirar da chamada',()=>kickFromCall(u),'danger'));
+ c.append(ctxBtn('Banir do servidor',()=>moderateBan(u),'danger'));positionCtx(c,x,y)}
+function positionCtx(c,x,y){c.classList.add('s');const r=c.getBoundingClientRect();c.style.left=Math.min(x,innerWidth-r.width-10)+'px';c.style.top=Math.min(y,innerHeight-r.height-10)+'px'}
+async function moderateMute(u,unmute){const value=!unmute,{error}=await sb.rpc('set_server_mute',{sid:sv,target:u,muted:value});if(error){toast('Não foi possível alterar o silêncio: '+error.message);return}lobby?.send({type:'broadcast',event:'moderation',payload:{to:u,kind:'mute',value}});toast(unmute?'Membro reativado':'Membro silenciado');await refreshMembers();draw()}
+async function moderatePunish(u,seconds){const {error}=await sb.rpc('set_server_punishment',{sid:sv,target:u,seconds});if(error){toast('Não foi possível aplicar o castigo: '+error.message);return}toast(seconds?'Castigo aplicado por '+seconds+' segundos':'Castigo removido');await refreshMembers();draw()}
+async function moderateRole(u,role){const {error}=await sb.rpc('set_server_role',{sid:sv,target:u,new_role:role});if(error){toast('Não foi possível alterar o cargo: '+error.message);return}toast('Cargo atualizado');await refreshMembers();draw()}
+async function moderateBan(u){if(!confirm('Banir '+name(u)+' deste servidor?'))return;const {error}=await sb.rpc('ban_from_server',{sid:sv,target:u});if(error){toast('Não foi possível banir: '+error.message);return}toast('Membro banido do servidor');await refreshMembers();draw()}
+function kickFromCall(u){if(!isAdmin()||!vcCh)return;lobby?.send({type:'broadcast',event:'call-kick',payload:{to:u,vc:vcCh}});toast(name(u)+' foi retirado da chamada')}
+$('ctx').oncontextmenu=e=>e.preventDefault();document.addEventListener('click',e=>{if(!e.target.closest('#ctx'))closeCtx()});
+
 /* ===== perfil ===== */
 function pick(k){tgt=k;$('fl').value='';$('fl').click()}
 $('fl').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{await setImg(tgt,f)}catch(x){toast(x.message||'Não deu para trocar a imagem')}};
 function shrinkB(f,[w,h]){return createImageBitmap(f).then(im=>{const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#111';g.fillRect(0,0,w,h);const s=Math.max(w/im.width,h/im.height),dw=im.width*s,dh=im.height*s;g.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);return new Promise(r=>c.toBlob(r,'image/jpeg',.88))})}
-async function setImg(k,f){if(!/^image\//.test(f.type))throw new Error('Escolha um arquivo de imagem');if(f.size>10*1024*1024)throw new Error('Imagem maior que 10 MB');
+async function setImg(k,f){if(k=='c')return sendImg(f);if(k=='k')return addSticker(f);if(!/^image\//.test(f.type))throw new Error('Escolha um arquivo de imagem');if(f.size>10*1024*1024)throw new Error('Imagem maior que 10 MB');
  const gif=f.type=='image/gif'&&k!='s';let blob=f;if(!gif)blob=await shrinkB(f,k=='b'?[1200,400]:k=='a'?[512,512]:[256,256]);
  const path=uid+'/'+k+'-'+Date.now()+'.'+(gif?'gif':'jpg');
  const {error}=await sb.storage.from('media').upload(path,blob,{contentType:gif?'image/gif':'image/jpeg',cacheControl:'31536000'});if(error)throw error;
@@ -406,7 +501,7 @@ async function startMic(){const mon=mic&&mic.mon;stopMic();
 function monitor(on){if(!mic)return;mic.mon=on;try{on?mic.gate.connect(AC.destination):mic.gate.disconnect(AC.destination)}catch(e){}$('tst').textContent=on?'Parar teste':'Ouvir meu microfone'}
 function tick(){if(!mic)return;mic.an.getFloatTimeDomainData(mic.buf);let s=0;for(const x of mic.buf)s+=x*x;const r=Math.sqrt(s/mic.buf.length),n=performance.now();
  if(!cfg.gate||r>cfg.th)mic.hold=n+300;const open=n<mic.hold&&!(muted&&vcCh);mic.gate.gain.setTargetAtTime(open?1:0,AC.currentTime,open?.01:.08);
- const t=document.querySelector('.tile.me');t&&t.classList.toggle('sp',open&&r>cfg.th);$('mt').style.width=Math.min(100,r*1000)+'%'}
+ const speaking=open&&r>cfg.th;if(speaking!==!!pres.speaking){pres.speaking=speaking;lobby&&lobby.track(pres);draw()}const t=document.querySelector('.tile.me');t&&t.classList.toggle('sp',speaking);$('mt').style.width=Math.min(100,r*1000)+'%';const gs=!cfg.gate?'Porta desligada':r>cfg.th?'Voz passando':'Cortando ruído';if(gs!==tick.l){tick.l=gs;$('gst').textContent=gs}}
 const micErr=x=>toast(x&&x.name=='NotAllowedError'?'Microfone bloqueado. Clique no cadeado do navegador e permita.':x&&x.name=='NotFoundError'?'Nenhum microfone encontrado.':'Não consegui acessar o microfone.');
 function paintSet(){$('ns').checked=cfg.ns;$('ec').checked=cfg.ec;$('agc').checked=cfg.agc;$('gt').checked=cfg.gate;$('th').value=cfg.th*1000;$('mk').style.left=cfg.th*1000+'%';$('sn2').checked=cfg.snd}
 $('set').onclick=e=>{if(e.target==$('set'))closeSet()};
@@ -420,10 +515,17 @@ $('dev').onchange=async e=>{cfg.dev=e.target.value;save();try{await startMic()}c
 $('sn2').onchange=e=>{cfg.snd=e.target.checked;save();SND.click()};
 $('tst').onclick=()=>monitor(!(mic&&mic.mon));
 
+/* ===== soundboard ===== */
+let soundDest=null,soundNodes=new Map();
+function drawSoundboard(){const b=$('sndb');if(!b)return;b.innerHTML='';if(sv=='home'){b.style.display='none';return}b.style.display='flex';if(!sounds.length)b.append(E('span','hint','Nenhum som enviado ainda.'));sounds.forEach(s=>{const x=btn('▶ '+s.name,'',()=>playSound(s));x.title='Tocar para todos na chamada';b.append(x)});if(isAdmin())b.append(btn('+ Enviar áudio','on',()=>$('sndf').click()))}
+async function uploadSound(f){if(!f||!/^audio\//.test(f.type)){toast('Escolha um arquivo de áudio');return}if(f.size>15*1024*1024){toast('O áudio deve ter no máximo 15 MB');return}const safe=f.name.replace(/[^a-z0-9._-]/gi,'-').slice(-60)||'som';try{toast('Enviando som…');const path=uid+'/sound-'+Date.now()+'-'+safe;const up=await sb.storage.from('media').upload(path,f,{contentType:f.type,cacheControl:'31536000'});if(up.error)throw up.error;const url=sb.storage.from('media').getPublicUrl(path).data.publicUrl;const ins=await sb.from('server_sounds').insert({server_id:sv,user_id:uid,name:f.name.slice(0,40),url}).select().single();if(ins.error)throw ins.error;sounds.unshift(ins.data);drawSoundboard();toast('Som adicionado ao servidor');SND.ok()}catch(e){toast('Não foi possível enviar o som')}}
+function playSound(s){if(!vcCh){toast('Entre na chamada para tocar um som');return}try{const c=ctx();soundDest=soundDest||c.createMediaStreamDestination();const a=new Audio(s.url);a.crossOrigin='anonymous';a.volume=.9;const src=c.createMediaElementSource(a),gain=c.createGain();src.connect(gain);gain.connect(c.destination);gain.connect(soundDest);const track=soundDest.stream.getAudioTracks()[0];soundNodes.set(a,{src,gain,track});Object.values(pcs).forEach(o=>{if(!o.sound){o.sound=o.pc.addTrack(track,soundDest.stream);offer(Object.keys(pcs).find(k=>pcs[k]===o)).catch(()=>{})}});a.onended=()=>{const n=soundNodes.get(a);if(n){Object.values(pcs).forEach(o=>{if(o.sound){try{o.pc.removeTrack(o.sound)}catch(e){}o.sound=null}});soundNodes.delete(a);Object.keys(pcs).forEach(k=>offer(k).catch(()=>{}))}};a.play().catch(()=>toast('O navegador bloqueou o áudio'))}catch(e){toast('Não foi possível tocar este som')}}
+$('sbb').onclick=()=>{const b=$('sndb');b.style.display=b.style.display=='none'?'flex':'none'};$('sndf').onchange=e=>uploadSound(e.target.files[0]);
+
 /* ===== voz (WebRTC) + tela ===== */
 const sig=(to,d)=>lobby.send({type:'broadcast',event:'sig',payload:Object.assign({to,from:myKey,vc:vcCh},d)});
 function mkPC(pid){if(pcs[pid])return pcs[pid];const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]}),o={pc,q:[],rd:false};pcs[pid]=o;
- pc.addTrack(mic.track,mic.dest.stream);if(scr)o.vs=pc.addTrack(scr.getVideoTracks()[0],scr);
+ pc.addTrack(mic.track,mic.dest.stream);if(soundDest)o.sound=pc.addTrack(soundDest.stream.getAudioTracks()[0],soundDest.stream);if(scr)o.vs=pc.addTrack(scr.getVideoTracks()[0],scr);
  pc.onicecandidate=e=>e.candidate&&sig(pid,{c:e.candidate});
  pc.ontrack=e=>{if(e.track.kind=='video'){const st=e.streams[0]||new MediaStream([e.track]);vids[pid]=st;e.track.onmute=e.track.onended=()=>{delete vids[pid];syncScr()};e.track.onunmute=()=>{vids[pid]=st;syncScr()};syncScr();return}
   let a=auds[pid];if(!a){a=new Audio();a.autoplay=true;auds[pid]=a}a.srcObject=e.streams[0];a.muted=deaf;a.play().catch(()=>{})};return o}
@@ -434,10 +536,10 @@ function sync(){if(!vcCh||!mic)return;const ids=inVoice(vcCh).filter(p=>p.peer!=
  Object.keys(pcs).forEach(k=>{if(!ids.includes(k)){pcs[k].pc.close();delete pcs[k];delete vids[k];if(auds[k]){auds[k].srcObject=null;delete auds[k]}syncScr()}})}
 async function joinVoice(id){if(!lobby){toast('Conectando… tente de novo em instantes');return}if(vcCh)leaveVoice(true);try{await startMic()}catch(e){micErr(e);return}
  vcCh=id;SND.join();stat();setPres({voice:id,mute:muted,share:false});sync();draw()}
-function leaveVoice(q){stopShare(true);Object.values(pcs).forEach(o=>o.pc.close());pcs={};vids={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};vcCh=null;stopMic();setPres({voice:null,share:false});stat();syncScr();if(!q){SND.leave();draw()}}
-$('vl').onclick=()=>{const c=cur();if(!c)return;vcCh==c.id?leaveVoice():joinVoice(c.id)};
-function setMute(v){muted=v;v?SND.mute():SND.unmute();$('bm').classList.toggle('red',muted);setPres({mute:muted});stat();draw()}
-function setDeaf(v){deaf=v;if(v)muted=true;Object.values(auds).forEach(a=>a.muted=deaf);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted});stat();draw()}
+ function leaveVoice(q){stopRing(true);stopShare(true);Object.values(pcs).forEach(o=>o.pc.close());pcs={};vids={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};soundNodes.forEach((n,a)=>{a.pause();a.src=''});soundNodes.clear();vcCh=null;stopMic();setPres({voice:null,share:false});stat();syncScr();if(!q){SND.leave();draw()}}
+$('vl').onclick=()=>{const id=vcId();if(!id)return;vcCh==id?leaveVoice():joinVoice(id)};
+function setMute(v){if(!v&&sv!='home'&&memberMuted(uid)){toast('Um administrador mantém seu microfone silenciado');return}muted=v;if(v)pres.speaking=false;v?SND.mute():SND.unmute();$('bm').classList.toggle('red',muted);setPres({mute:muted,speaking:!!pres.speaking});stat();draw()}
+function setDeaf(v){deaf=v;if(v){muted=true;pres.speaking=false}Object.values(auds).forEach(a=>a.muted=deaf);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted,deaf,speaking:!!pres.speaking});stat();draw()}
 const stat=()=>$('st').textContent=deaf?'sem áudio':muted?'mudo':vcCh?'em chamada':'online';
 $('bm').onclick=()=>setMute(!muted);$('vm').onclick=()=>setMute(!muted);$('bd').onclick=()=>setDeaf(!deaf);
 function syncScr(){const box=$('scr'),want={};if(scr)want.me={s:scr,n:'Sua tela'};Object.keys(vids).forEach(k=>{const p=peers.find(x=>x.peer==k);want[k]={s:vids[k],n:name(p&&p.uid)+' · tela'}});
@@ -452,6 +554,24 @@ async function startShare(){if(!vcCh)return;try{scr=await navigator.mediaDevices
 function stopShare(q){if(!scr)return;scr.getTracks().forEach(t=>t.stop());scr=null;
  if(!q){for(const [pid,o] of Object.entries(pcs)){if(o.vs){try{o.pc.removeTrack(o.vs)}catch(e){}o.vs=null;offer(pid).catch(()=>{})}}setPres({share:false});SND.mute();draw()}}
 $('vsh').onclick=()=>scr?stopShare():startShare();
+
+/* ===== ligações diretas ===== */
+let ringT=null,inRing=null,ringTone=null,ringTO=null;
+async function startCall(){if(!dmId||!lobby)return;const id='dm:'+dmKey(uid,dmId),to=dmId;if(vcCh!==id){await joinVoice(id);if(vcCh!==id)return}
+ const ring=()=>lobby.send({type:'broadcast',event:'ring',payload:{to,from:uid,vc:id}});
+ stopRing(false);ring();ringT={to,vc:id,t0:Date.now(),i:setInterval(ring,3000)};
+ ringT.o=setInterval(()=>{if(ringT&&Date.now()-ringT.t0>40000){toast(name(to)+' não atendeu');stopRing(true);draw()}},1000);draw()}
+function stopRing(send){if(!ringT)return;clearInterval(ringT.i);clearInterval(ringT.o);if(send&&lobby)lobby.send({type:'broadcast',event:'ringend',payload:{to:ringT.to,from:uid,vc:ringT.vc}});ringT=null}
+function chkRing(){if(ringT&&peers.some(p=>p.voice===ringT.vc&&p.uid==ringT.to)){stopRing(false);draw()}}
+function showRing(d){if(!friendIds().includes(d.from)||vcCh===d.vc)return;clearTimeout(ringTO);ringTO=setTimeout(hideRing,9000);if(inRing&&inRing.vc==d.vc)return;inRing=d;
+ const r=$('ring');r.innerHTML='';const a=mkAv(d.from);a.classList.add('big');a.onclick=null;a.style.cursor='default';
+ const ac=btn('Atender','on',acceptCall),dc=btn('Recusar','red',declineCall);ac.dataset.q=dc.dataset.q='1';const x=E('div','ctl');x.append(dc,ac);
+ r.append(a,E('div','pnm',name(d.from)),E('div','hint','está te ligando…'),x);r.classList.add('s');
+ const ping=()=>[880,1109].forEach((f,i)=>tone(f,.25,.07,i*.18));ping();ringTone=setInterval(ping,1800)}
+function hideRing(){clearTimeout(ringTO);clearInterval(ringTone);ringTone=null;inRing=null;$('ring').classList.remove('s')}
+async function acceptCall(){const d=inRing;hideRing();if(!d)return;sv='home';ch=null;dmId=d.from;watch();await joinVoice(d.vc);draw()}
+function declineCall(){const d=inRing;hideRing();if(d&&lobby)lobby.send({type:'broadcast',event:'ringend',payload:{to:d.from,from:uid,vc:d.vc,declined:true}})}
+$('callb').onclick=startCall;
 
 init();
 </script></body></html>
