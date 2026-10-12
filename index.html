@@ -227,6 +227,11 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <div id="toast" class="glass"></div>
 <div id="ctx" class="ctx"></div>
 
+<div id="camm" class="ov"><div class="card" style="max-width:520px;width:100%">
+<div class="lb">Câmera</div>
+<video id="camv" autoplay playsinline muted style="width:100%;border-radius:12px;background:#000"></video>
+<div class="ctl" style="margin-top:10px"><button type="button" class="glass" id="camx">Cancelar</button><button type="button" class="glass on" id="camshot">📸 Tirar foto</button></div>
+<div class="hint" style="text-align:center;margin-top:6px">Permita o acesso à câmera quando o navegador pedir.</div></div>
 <script>
 /* ===== CONFIGURAÇÃO (edite aqui) ===== */
 const CFG={
@@ -709,9 +714,5 @@ function declineCall(){const d=inRing;hideRing();if(d&&lobby)lobby.send({type:'b
 $('callb').onclick=startCall;
 
 init();
-</script><div id="camm" class="ov"><div class="card" style="max-width:520px;width:100%">
-<div class="lb">Câmera</div>
-<video id="camv" autoplay playsinline muted style="width:100%;border-radius:12px;background:#000"></video>
-<div class="ctl" style="margin-top:10px"><button type="button" class="glass" id="camx">Cancelar</button><button type="button" class="glass on" id="camshot">📸 Tirar foto</button></div>
-<div class="hint" style="text-align:center;margin-top:6px">Permita o acesso à câmera quando o navegador pedir.</div></div></div>
+</script></div>
 </body></html>
