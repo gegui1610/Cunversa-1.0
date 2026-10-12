@@ -324,7 +324,7 @@ async function boot(user){uid=user.id;$('auth').classList.remove('s');$('app').s
  if(!p){toast('Perfil não encontrado. Rode o schema.sql no Supabase.');return}
  me=p;P[uid]=p;draw();
  await Promise.all([refreshSocial(),refreshServers(),loadStk().catch(()=>{}),loadMySounds().catch(()=>{})]);realtime();lobbyInit();draw()}
- function teardown(){leaveVoice(true);try{if(lobby){lobby.untrack();sb.removeChannel(lobby)}sb.removeAllChannels()}catch(e){}lobby=null;dbch=null;me={};P={};fr=[];srv=[];chans=[];mems=[];msgs=[];peers=[];sv='home';ch=null;dmId=null;uid=null}
+ function teardown(){leaveVoice(true);try{if(lobby){lobby.untrack();sb.removeChannel(lobby)}sb.removeAllChannels()}catch(e){}lobby=null;dbch=null;clearTimeout(lobbyRetry);lobbyRetry=null;lobbyAttempts=0;lobbyInitSeq++;myKey='';pres={};me={};P={};fr=[];srv=[];chans=[];mems=[];msgs=[];peers=[];sv='home';ch=null;dmId=null;uid=null}
 
 /* ===== dados ===== */
 async function refreshSocial(){const {data}=await sb.from('friendships').select('*');fr=data||[];await ensure(fr.flatMap(r=>[r.requester,r.addressee]));draw()}
@@ -363,9 +363,11 @@ function realtime(){dbch=sb.channel('db')
  .subscribe()}
 
 /* ===== presença + sinalização de voz ===== */
-function lobbyInit(){if(lobby){try{lobby.untrack()}catch(e){}try{sb.removeChannel(lobby)}catch(e){}}myKey=uid+':'+Math.random().toString(36).slice(2,7);pres={uid,t:Date.now(),voice:null,mute:false,deaf:false,speaking:false,share:false};
- lobby=sb.channel('lobby',{config:{presence:{key:myKey},broadcast:{self:false}}});
- lobby.on('presence',{event:'sync'},presSync)
+let lobbyInitSeq=0;
+async function lobbyInit(){const seq=++lobbyInitSeq,old=lobby;lobby=null;if(old){try{await old.untrack()}catch(e){}try{await sb.removeChannel(old)}catch(e){}}
+ if(!uid||seq!==lobbyInitSeq)return;myKey=myKey||uid+':'+Math.random().toString(36).slice(2,7);pres=Object.assign({},pres,{uid,t:Date.now(),voice:vcCh||null,mute:!!muted,deaf:!!deaf,speaking:!!pres.speaking,share:!!scr,camera:!!callCam});
+ const channel=sb.channel('lobby',{config:{presence:{key:myKey},broadcast:{self:false}}});lobby=channel;
+ channel.on('presence',{event:'sync'},presSync)
   .on('broadcast',{event:'bye'},({payload:d})=>{if(d&&d.peer&&d.peer!=myKey){gone[d.peer]=Date.now();presSync()}})
   .on('broadcast',{event:'sig'},({payload:d})=>{if(!vcCh||!d||d.to!==myKey||d.vc!==vcCh)return;onSig(d.from,d).catch(()=>{})})
   .on('broadcast',{event:'ring'},({payload:d})=>{if(d&&d.to===uid)showRing(d)})
@@ -374,7 +376,7 @@ function lobbyInit(){if(lobby){try{lobby.untrack()}catch(e){}try{sb.removeChanne
   .on('broadcast',{event:'sound-meta'},({payload:d})=>{if(d&&d.uid&&d.streamId){peerSoundStreamIds[d.uid]=d.active?d.streamId:null;draw()}})
   .on('broadcast',{event:'video-meta'},({payload:d})=>{if(d&&d.to===myKey&&d.from&&d.streamId&&['camera','screen'].includes(d.kind)){videoKinds[d.from+':'+d.streamId]=d.kind;routePendingVideo(d.from,d.streamId)}})
   .on('broadcast',{event:'ringend'},({payload:d})=>{if(!d||d.to!==uid)return;if(inRing&&inRing.vc==d.vc)hideRing();if(d.declined&&ringT&&ringT.vc==d.vc){toast(name(d.from)+' recusou a chamada');stopRing(false);leaveVoice()}})
-  .subscribe(st=>{if(st==='SUBSCRIBED'){lobbyAttempts=0;clearTimeout(lobbyRetry);lobbyRetry=null;lobby.track(pres).catch?.(()=>{});presSync()}else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)){clearTimeout(lobbyRetry);lobbyRetry=setTimeout(()=>{if(uid)lobbyInit()},Math.min(15000,1000*Math.pow(2,Math.min(lobbyAttempts++,4))))}})}
+  .subscribe(st=>{if(lobby!==channel)return;if(st==='SUBSCRIBED'){lobbyAttempts=0;clearTimeout(lobbyRetry);lobbyRetry=null;channel.track(pres).catch?.(()=>{});presSync()}else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)){clearTimeout(lobbyRetry);lobbyRetry=setTimeout(()=>{if(uid&&lobby===channel)lobbyInit()},Math.min(15000,1000*Math.pow(2,Math.min(lobbyAttempts++,4))))}})}
 const gone={};
 function presSync(){if(!lobby)return;const s=lobby.presenceState(),unique=new Map(),now=Date.now();
  Object.entries(s).forEach(([k,a])=>{if(gone[k]&&now-gone[k]<180000)return;const p=Object.assign({peer:k},a[a.length-1]);if(!p.uid)return;
@@ -672,7 +674,7 @@ function mkPC(pid){if(pcs[pid])return pcs[pid];const pc=new RTCPeerConnection({i
  pc.ontrack=e=>{if(e.track.kind==='video'){receiveVideo(pid,e.streams[0]||new MediaStream([e.track]),e.track);return}const st=e.streams[0],p=peers.find(x=>x.peer===pid),u=p&&p.uid,isSound=st&&u&&peerSoundStreamIds[u]===st.id;if(isSound){const key=u+':'+st.id;let a=soundAuds[key];if(!a){a=new Audio();a.autoplay=true;soundAuds[key]=a}a.srcObject=st;a.muted=deaf||!!soundMuted[u];if(cfg.odev&&a.setSinkId)a.setSinkId(cfg.odev).catch(()=>{});a.play().catch(()=>{})}else{let a=auds[pid];if(!a){a=new Audio();a.autoplay=true;auds[pid]=a}a.srcObject=st;a.muted=deaf;if(cfg.odev&&a.setSinkId)a.setSinkId(cfg.odev).catch(()=>{});a.play().catch(()=>{})}};return o}
 async function negotiate(pid,o){if(!lobby||!vcCh||!o||o.makingOffer||o.pc.signalingState!=='stable')return;try{o.makingOffer=true;await o.pc.setLocalDescription(await o.pc.createOffer());sig(pid,{sdp:o.pc.localDescription})}catch(e){console.warn('Falha na negociação WebRTC',pid,e)}finally{o.makingOffer=false}}
 async function onSig(from,d){if(!vcCh||!d||d.vc!==vcCh)return;const o=mkPC(from),pc=o.pc;if(d.sdp){const readyForOffer=!o.makingOffer&&(pc.signalingState==='stable'||o.isSettingRemoteAnswerPending),collision=d.sdp.type==='offer'&&!readyForOffer;o.ignoreOffer=!o.polite&&collision;if(o.ignoreOffer)return;if(collision&&o.polite)await pc.setLocalDescription({type:'rollback'});o.isSettingRemoteAnswerPending=d.sdp.type==='answer';await pc.setRemoteDescription(d.sdp);o.isSettingRemoteAnswerPending=false;o.rd=true;for(const c of o.q)await pc.addIceCandidate(c);o.q=[];if(d.sdp.type==='offer'){await pc.setLocalDescription(await pc.createAnswer());sig(from,{sdp:pc.localDescription})}}else if(d.c){try{o.rd?await pc.addIceCandidate(d.c):o.q.push(d.c)}catch(e){if(!o.ignoreOffer)console.warn('Candidato ICE recusado',e)}}}
-function sync(){if(!vcCh||!mic)return;const ids=inVoice(vcCh).filter(p=>p.peer!==myKey).map(p=>p.peer);ids.forEach(id=>{clearTimeout(peerDropTimers[id]);delete peerDropTimers[id];mkPC(id)});Object.keys(pcs).forEach(k=>{if(!ids.includes(k)&&!peerDropTimers[k])peerDropTimers[k]=setTimeout(()=>{delete peerDropTimers[k];if(inVoice(vcCh).some(p=>p.peer===k))return;const o=pcs[k];if(o){clearTimeout(o.retryTimer);o.pc.close();delete pcs[k]}delete vids[k];delete camVids[k];Object.keys(pendingVideos).filter(x=>x.startsWith(k+':')).forEach(x=>delete pendingVideos[x]);Object.keys(videoKinds).filter(x=>x.startsWith(k+':')).forEach(x=>delete videoKinds[x]);if(auds[k]){auds[k].srcObject=null;delete auds[k]}syncScr();draw()},5000)})}
+function sync(){if(!vcCh||!mic)return;const ids=inVoice(vcCh).filter(p=>p.peer!==myKey).map(p=>p.peer);ids.forEach(id=>{clearTimeout(peerDropTimers[id]);delete peerDropTimers[id];mkPC(id)});Object.keys(pcs).forEach(k=>{if(!ids.includes(k)&&!peerDropTimers[k])peerDropTimers[k]=setTimeout(()=>{delete peerDropTimers[k];if(inVoice(vcCh).some(p=>p.peer===k))return;const o=pcs[k];if(o){clearTimeout(o.retryTimer);o.pc.close();delete pcs[k]}delete vids[k];delete camVids[k];Object.keys(pendingVideos).filter(x=>x.startsWith(k+':')).forEach(x=>delete pendingVideos[x]);Object.keys(videoKinds).filter(x=>x.startsWith(k+':')).forEach(x=>delete videoKinds[x]);if(auds[k]){auds[k].srcObject=null;delete auds[k]}syncScr();draw()},15000)})}
 async function joinVoice(id){if(!lobby){toast('Conectando… tente de novo em instantes');return}if(vcCh)leaveVoice(true);try{await startMic()}catch(e){micErr(e);return}
  vcCh=id;SND.join();stat();setPres({voice:id,mute:muted,share:false});sync();draw()}
  function leaveVoice(q){stopRing(true);stopShare(true);stopCallCamera();Object.values(peerDropTimers).forEach(clearTimeout);peerDropTimers={};Object.values(pcs).forEach(o=>{clearTimeout(o.retryTimer);o.pc.close()});pcs={};vids={};camVids={};pendingVideos={};videoKinds={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};Object.values(soundAuds).forEach(a=>a.srcObject=null);soundAuds={};soundNodes.forEach((n,a)=>{a.pause();a.src=''});soundNodes.clear();vcCh=null;stopMic();setPres({voice:null,share:false,camera:false});stat();syncScr();draw()}
