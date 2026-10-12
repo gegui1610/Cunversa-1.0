@@ -66,7 +66,7 @@ button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;bo
 .tiles{flex:1;min-height:0;width:100%;container-type:size;display:flex}
 .tgrid{--cols:1;--rows:1;--gap:12px;margin:auto;width:min(100cqw,calc((100cqh - (var(--rows) - 1)*var(--gap))/var(--rows)*1.6*var(--cols) + (var(--cols) - 1)*var(--gap)));display:grid;grid-template-columns:repeat(calc(var(--cols)*2),minmax(0,1fr));column-gap:var(--gap);row-gap:var(--gap)}
 #vcm{flex:none;text-align:center;color:var(--mu);white-space:pre-line}
-.tile{position:relative;width:100%;aspect-ratio:16/10;container-type:size;display:grid;place-items:center;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(0,0,0,.4);background:radial-gradient(115% 125% at 12% 0%,var(--g1,#2b2b33) 0%,transparent 66%),radial-gradient(115% 125% at 100% 100%,var(--g2,#1c1c22) 0%,transparent 66%),linear-gradient(155deg,var(--g3,#17171b),#0b0b0d)}
+.tile{position:relative;width:100%;aspect-ratio:16/10;container-type:size;display:grid;place-items:center;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(0,0,0,.4);background:radial-gradient(115% 125% at 12% 0%,var(--g1,#2b2b33) 0%,transparent 66%),radial-gradient(115% 125% at 100% 100%,var(--g2,#1c1c22) 0%,transparent 66%),linear-gradient(155deg,var(--g3,#17171b),#0b0b0d)}.tile .tcam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:none}.tile.cam .tcam{display:block}.tile.cam .vav{display:none}
 .vav{width:clamp(28px,40cqmin,180px);height:clamp(28px,40cqmin,180px);border-radius:50%;transition:box-shadow .12s}
 .vav .avw{width:100%;height:100%}.vav .av{width:100%;height:100%;font-size:clamp(18px,16cqmin,70px)}
 .tname{position:absolute;left:10px;bottom:10px;max-width:calc(100% - 64px);padding:4px 10px;border-radius:8px;background:rgba(0,0,0,.55);font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -192,13 +192,14 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <form class="card" id="addf"><div class="lb">Adicionar amigo</div><div class="row"><input class="fi" id="addc" placeholder="0000-0000" inputmode="numeric" maxlength="9" autocomplete="off"><button class="glass on sm" data-q="1">Adicionar</button></div></form>
 <div id="frl"></div></div>
 <div id="msgs"></div>
-<div id="vc"><div id="scr"></div><div class="tiles"><div class="tgrid" id="tl"></div></div><div id="vcm"></div><div class="ctl vcc"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="sound-panel" style="display:none"></div></div>
-<div id="stk"></div><div id="replybar" class="glass" style="display:none;align-items:center;gap:8px;padding:7px 12px;margin:0 14px 8px;border-radius:12px;font-size:12px"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span><button type="button" class="ib glass" id="cancelReply" title="Cancelar resposta">×</button></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
+<div id="vc"><div id="scr"></div><div class="tiles"><div class="tgrid" id="tl"></div></div><div id="vcm"></div><div class="ctl vcc"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vcam" data-q="1" style="display:none">📷 Câmera</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="sound-panel" style="display:none"></div></div>
+<div id="stk"></div><div id="replybar" class="glass" style="display:none;align-items:center;gap:8px;padding:7px 12px;margin:0 14px 8px;border-radius:12px;font-size:12px"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span><button type="button" class="ib glass" id="cancelReply" title="Cancelar resposta">×</button></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="cam" title="Abrir câmera" data-q="1">📷</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
 <aside id="mem" class="pane"><div class="lb" id="mlb">Online agora</div><div id="ml"></div></aside>
 </div>
 
 <div class="ov" id="set"><div class="box pane"><h3>Ajustes de voz</h3>
-<div class="card"><div class="lb">Microfone</div><select id="dev"></select></div>
+<div class="card"><div class="lb">Entrada de áudio — microfone</div><select id="dev" aria-label="Entrada de áudio"></select><button class="glass sm" id="rdev" type="button" style="margin-top:8px">Atualizar dispositivos</button></div>
+<div class="card"><div class="lb">Saída de áudio — alto-falante ou fone</div><select id="odev" aria-label="Saída de áudio"></select><div class="hint" style="margin-top:4px">Escolha onde ouvir a chamada. A seleção depende do suporte do navegador; em alguns, só funciona em HTTPS ou no app instalado.</div></div>
 <div class="card"><div class="lb">Qualidade do áudio</div>
 <label class="rw">Supressão de ruído<input type="checkbox" class="sw" id="ns"></label>
 <label class="rw">Cancelamento de eco<input type="checkbox" class="sw" id="ec"></label>
@@ -268,7 +269,7 @@ const FX=[
 /* ===== estado ===== */
 let sb,uid=null,me={},P={},fr=[],srv=[],chans=[],mems=[],msgs=[],reactions=[],replyTo=null,sounds=[],mySounds=[],lobby=null,myKey='',pres={},peers=[],dbch=null;
 let sv='home',ch=null,dmId=null,booted=false,wtok=0,tgt=null,pfU=null;
-let vcCh=null,pcs={},auds={},soundAuds={},peerSoundStreamIds={},soundMuted={},mic=null,muted=false,deaf=false,scr=null,vids={},vel={},peerVolumes={};
+let vcCh=null,pcs={},auds={},soundAuds={},peerSoundStreamIds={},soundMuted={},mic=null,muted=false,deaf=false,scr=null,vids={},vel={},peerVolumes={},callCam=null,camVids={},videoKinds={},pendingVideos={},peerDropTimers={},lobbyRetry=null,lobbyAttempts=0;
 const dmKey=(a,b)=>[a,b].sort().join('_');
 const name=u=>(P[u]&&P[u].username)||'Amigo';
 const hue=u=>{let h=0;for(const c of String(u))h=(h*31+c.charCodeAt(0))%360;return 'hsl('+h+',55%,42%)'};
@@ -366,8 +367,9 @@ function lobbyInit(){if(lobby){try{lobby.untrack()}catch(e){}try{sb.removeChanne
   .on('broadcast',{event:'moderation'},({payload:d})=>{if(d&&d.to===uid&&d.kind=='mute'&&d.value){setMute(true);toast('Você foi silenciado por um administrador') }})
   .on('broadcast',{event:'call-kick'},({payload:d})=>{if(d&&d.to===uid&&d.vc===vcCh){toast('Você foi retirado da chamada por um administrador');leaveVoice()}})
   .on('broadcast',{event:'sound-meta'},({payload:d})=>{if(d&&d.uid&&d.streamId){peerSoundStreamIds[d.uid]=d.active?d.streamId:null;draw()}})
+  .on('broadcast',{event:'video-meta'},({payload:d})=>{if(d&&d.to===myKey&&d.from&&d.streamId&&['camera','screen'].includes(d.kind)){videoKinds[d.from+':'+d.streamId]=d.kind;routePendingVideo(d.from,d.streamId)}})
   .on('broadcast',{event:'ringend'},({payload:d})=>{if(!d||d.to!==uid)return;if(inRing&&inRing.vc==d.vc)hideRing();if(d.declined&&ringT&&ringT.vc==d.vc){toast(name(d.from)+' recusou a chamada');stopRing(false);leaveVoice()}})
-  .subscribe(st=>{if(st=='SUBSCRIBED')lobby.track(pres)})}
+  .subscribe(st=>{if(st==='SUBSCRIBED'){lobbyAttempts=0;clearTimeout(lobbyRetry);lobbyRetry=null;lobby.track(pres).catch?.(()=>{});presSync()}else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)){clearTimeout(lobbyRetry);lobbyRetry=setTimeout(()=>{if(uid)lobbyInit()},Math.min(15000,1000*Math.pow(2,Math.min(lobbyAttempts++,4))))}})}
 const gone={};
 function presSync(){if(!lobby)return;const s=lobby.presenceState(),unique=new Map(),now=Date.now();
  Object.entries(s).forEach(([k,a])=>{if(gone[k]&&now-gone[k]<180000)return;const p=Object.assign({peer:k},a[a.length-1]);if(!p.uid)return;
@@ -375,7 +377,7 @@ function presSync(){if(!lobby)return;const s=lobby.presenceState(),unique=new Ma
  peers=[...unique.values()];ensure(peers.map(p=>p.uid)).then(draw);sync();chkRing();draw()}
 addEventListener('pagehide',()=>{try{if(lobby){lobby.send({type:'broadcast',event:'bye',payload:{peer:myKey,uid}});lobby.untrack()}}catch(e){}});
 document.addEventListener('visibilitychange',()=>document.documentElement.classList.toggle('hid',document.hidden));
-const setPres=p=>{Object.assign(pres,p);lobby&&lobby.track(pres)};
+const setPres=p=>{Object.assign(pres,p,{t:Date.now()});if(lobby)lobby.track(pres).catch?.(()=>{})};
 
 /* ===== desenho ===== */
 function drawRail(){const r=$('rail');r.innerHTML='';const l=new Image();l.className='lg';l.alt=CFG.NAME;l.src=LOGO;r.append(l);
@@ -438,12 +440,12 @@ function grabCols(url){const im=new Image();im.crossOrigin='anonymous';im.onerro
 function avCols(u){const url=(P[u]||{}).avatar_url;if(url){const c=colC[url];if(Array.isArray(c))return c;if(c===undefined){colC[url]=0;grabCols(url)}}
  const h=parseInt(hue(u).slice(4))||0;return ['hsl('+h+',55%,34%)','hsl('+((h+40)%360)+',50%,24%)','hsl('+((h+320)%360)+',45%,15%)']}
 const avSig=u=>{const p=P[u]||{};return (p.avatar_url||'')+'|'+(p.effect||0)};
-function mkTile(p){const u=p.uid,d=E('div','tile'),v=E('div','vav');v.append(mkAv(u));d.append(v,E('div','tname'),E('div','tbadge'),E('div','tlive','AO VIVO'));d.oncontextmenu=e=>{e.preventDefault();openMemberMenu(u,e.clientX,e.clientY)};return d}
+function mkTile(p){const u=p.uid,d=E('div','tile'),v=E('div','vav'),video=document.createElement('video');video.className='tcam';video.autoplay=true;video.playsInline=true;video.muted=true;v.append(mkAv(u));d.append(video,v,E('div','tname'),E('div','tbadge'),E('div','tlive','AO VIVO'));d.oncontextmenu=e=>{e.preventDefault();openMemberMenu(u,e.clientX,e.clientY)};return d}
 function updTile(d,p,local){const st=local?pres:p,u=p.uid,c=avCols(u);d.classList.toggle('me',local);d.classList.toggle('talking',!!st.speaking&&!st.mute&&!st.deaf);
  d.style.setProperty('--g1',c[0]);d.style.setProperty('--g2',c[1]);d.style.setProperty('--g3',c[2]);
  const nm=d.querySelector('.tname');if(nm.textContent!==name(u))nm.textContent=name(u);
  const b=d.querySelector('.tbadge'),k=st.deaf?'d':st.mute?'m':'';if((b.dataset.k||'')!==k){b.dataset.k=k;b.innerHTML=k=='d'?svg(IC.hpoff,17):k=='m'?svg(IC.micoff,17):'';b.title=k=='d'?'Sem áudio':k=='m'?'Microfone mutado':''}
- d.querySelector('.tlive').style.display=st.share?'block':'none'}
+ d.querySelector('.tlive').style.display=st.share?'block':'none';const video=d.querySelector('.tcam'),stream=local?callCam:camVids[p.peer];d.classList.toggle('cam',!!stream);if(stream&&video.srcObject!==stream){video.srcObject=stream;video.play().catch(()=>{})}else if(!stream&&video.srcObject){video.srcObject=null}}
 let tvId='',tEl={};
 function drawVc(id){const t=$('tl');if(tvId!=id){t.innerHTML='';tEl={};tvId=id}
  const all=inVoice(id),seen=new Set(),n=all.length;
@@ -459,7 +461,7 @@ function drawVc(id){const t=$('tl');if(tvId!=id){t.innerHTML='';tEl={};tvId=id}
  const j=vcCh==id,dm=id.startsWith('dm:');
  $('vl').className='glass '+(j?'rb red':'on');$('vl').title=j?(dm?'Desligar':'Sair da chamada'):'';$('vl').innerHTML=j?svg(IC.phone,22):svg(IC.phone,18)+(dm?'Atender':'Entrar na chamada');
  $('vm').style.display=j?'':'none';$('vm').className='glass rb'+(muted?' red':'');$('vm').title=muted?'Reativar microfone':'Silenciar microfone';$('vm').innerHTML=svg(muted?IC.micoff:IC.mic,22);
- $('vsh').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?'':'none';$('vsh').className='glass rb'+(scr?' on':'');$('vsh').title=scr?'Parar compartilhamento':'Compartilhar tela';$('vsh').innerHTML=svg(IC.scr,22);
+ $('vcam').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia?'':'none';$('vcam').className='glass rb'+(callCam?' on':'');$('vcam').title=callCam?'Desligar câmera':'Ligar câmera';$('vcam').textContent=callCam?'📹':'📷';$('vsh').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?'':'none';$('vsh').className='glass rb'+(scr?' on':'');$('vsh').title=scr?'Parar compartilhamento':'Compartilhar tela';$('vsh').innerHTML=svg(IC.scr,22);
  $('vs').className='glass rb';$('vs').title='Ajustes de voz';$('vs').innerHTML=svg(IC.sl,22);
  drawSoundboard()}
 addEventListener('resize',()=>draw());
@@ -508,6 +510,21 @@ async function addSticker(f){if(!/^image\//.test(f.type)){toast('Escolha uma ima
 async function delStk(s){await sb.from('stickers').delete().eq('id',s.id);await loadStk();drawStk()}
 $('stb').onclick=()=>{const p=$('stk');if(p.classList.toggle('s'))drawStk()};
 $('att').onclick=()=>pick('c');
+let camStream=null;
+async function openCam(){if(!curQ()){toast('Abra uma conversa primeiro');return}
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast('Seu navegador não permite abrir a câmera');return}
+ try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'}},audio:false})}
+ catch(e){toast('Não foi possível acessar a câmera. Verifique a permissão.');return}
+ $('camv').srcObject=camStream;$('camm').classList.add('s')}
+function closeCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null}$('camv').srcObject=null;$('camm').classList.remove('s')}
+$('cam').onclick=openCam;
+$('camx').onclick=closeCam;
+$('camshot').onclick=async()=>{const v=$('camv');if(!v.videoWidth){toast('Câmera ainda carregando…');return}
+ const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;
+ c.getContext('2d').drawImage(v,0,0);
+ const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.9));
+ closeCam();if(!blob){toast('Não deu para capturar a foto');return}
+ await sendImg(new File([blob],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'}))};
 $('in').onpaste=e=>{const f=[...(e.clipboardData&&e.clipboardData.files||[])].find(x=>/^image\//.test(x.type));if(f){e.preventDefault();sendImg(f)}};
 $('lb').onclick=()=>$('lb').classList.remove('s');
 document.addEventListener('click',e=>{if(!e.target.closest('#stk,#stb'))$('stk').classList.remove('s')});
@@ -583,13 +600,8 @@ $('sm').onclick=e=>{if(e.target==$('sm'))$('sm').classList.remove('s')};
 
 /* ===== microfone (isolamento de voz) ===== */
 function stopMic(){if(!mic)return;clearInterval(mic.timer);mic.st.getTracks().forEach(t=>t.stop());try{mic.src.disconnect();mic.gate.disconnect()}catch(e){}mic=null}
-async function startMic(){const mon=mic&&mic.mon;stopMic();
- const st=await navigator.mediaDevices.getUserMedia({audio:{deviceId:cfg.dev?{exact:cfg.dev}:undefined,echoCancellation:cfg.ec,noiseSuppression:cfg.ns,autoGainControl:cfg.agc,channelCount:1}});
- const c=ctx(),src=c.createMediaStreamSource(st),hp=c.createBiquadFilter(),an=c.createAnalyser(),gate=c.createGain(),dest=c.createMediaStreamDestination();
- hp.type='highpass';hp.frequency.value=90;an.fftSize=1024;src.connect(hp);hp.connect(an);hp.connect(gate);gate.connect(dest);
- mic={st,src,an,gate,dest,hold:0,mon:false,track:dest.stream.getAudioTracks()[0],buf:new Float32Array(1024)};mic.timer=setInterval(tick,25);if(mon)monitor(true);
- Object.values(pcs).forEach(o=>o.pc.getSenders().forEach(s=>s.track&&s.track.kind=='audio'&&s.replaceTrack(mic.track)));
- try{const d=(await navigator.mediaDevices.enumerateDevices()).filter(x=>x.kind=='audioinput');$('dev').innerHTML='';d.forEach(x=>{const o=E('option','',x.label||'Microfone');o.value=x.deviceId;$('dev').append(o)});$('dev').value=cfg.dev||st.getAudioTracks()[0].getSettings().deviceId||''}catch(e){}}
+async function startMic(){const mon=mic&&mic.mon;stopMic();let st;const audio={echoCancellation:cfg.ec,noiseSuppression:cfg.ns,autoGainControl:cfg.agc,channelCount:1};try{st=await navigator.mediaDevices.getUserMedia({audio:Object.assign({},audio,cfg.dev?{deviceId:{exact:cfg.dev}}:{})})}catch(e){if(!cfg.dev||['NotAllowedError','SecurityError'].includes(e.name))throw e;cfg.dev='';save();toast('O microfone salvo não está disponível; tentando o padrão do aparelho.');st=await navigator.mediaDevices.getUserMedia({audio})}
+ const c=ctx(),src=c.createMediaStreamSource(st),hp=c.createBiquadFilter(),an=c.createAnalyser(),gate=c.createGain(),dest=c.createMediaStreamDestination();hp.type='highpass';hp.frequency.value=90;an.fftSize=1024;src.connect(hp);hp.connect(an);hp.connect(gate);gate.connect(dest);mic={st,src,an,gate,dest,hold:0,mon:false,track:dest.stream.getAudioTracks()[0],buf:new Float32Array(1024)};mic.timer=setInterval(tick,25);if(mon)monitor(true);Object.values(pcs).forEach(o=>o.pc.getSenders().forEach(x=>x.track&&x.track.kind==='audio'&&x.replaceTrack(mic.track).catch(()=>{})));await refreshDevices()}
 function monitor(on){if(!mic)return;mic.mon=on;try{on?mic.gate.connect(AC.destination):mic.gate.disconnect(AC.destination)}catch(e){}$('tst').textContent=on?'Parar teste':'Ouvir meu microfone'}
 function tick(){if(!mic)return;mic.an.getFloatTimeDomainData(mic.buf);let s=0;for(const x of mic.buf)s+=x*x;const r=Math.sqrt(s/mic.buf.length),n=performance.now();
  if(!cfg.gate||r>cfg.th)mic.hold=n+300;const open=n<mic.hold&&!(muted&&vcCh);mic.gate.gain.setTargetAtTime(open?1:0,AC.currentTime,open?.01:.08);
@@ -597,13 +609,17 @@ function tick(){if(!mic)return;mic.an.getFloatTimeDomainData(mic.buf);let s=0;fo
 const micErr=x=>toast(x&&x.name=='NotAllowedError'?'Microfone bloqueado. Clique no cadeado do navegador e permita.':x&&x.name=='NotFoundError'?'Nenhum microfone encontrado.':'Não consegui acessar o microfone.');
 function paintSet(){$('ns').checked=cfg.ns;$('ec').checked=cfg.ec;$('agc').checked=cfg.agc;$('gt').checked=cfg.gate;$('th').value=cfg.th*1000;$('mk').style.left=cfg.th*1000+'%';$('sn2').checked=cfg.snd}
 $('set').onclick=e=>{if(e.target==$('set'))closeSet()};
-async function openSet(){paintSet();$('set').classList.add('s');try{await startMic()}catch(e){micErr(e)}}
+async function openSet(){paintSet();$('set').classList.add('s');fillOut();applySink();try{await startMic()}catch(e){micErr(e)}}
 function closeSet(){$('set').classList.remove('s');if(!vcCh)stopMic();else monitor(false)}
 $('cls').onclick=closeSet;$('bs').onclick=openSet;$('vs').onclick=openSet;
 ['ns','ec','agc'].forEach(k=>$(k).onchange=async e=>{cfg[k]=e.target.checked;save();try{await startMic()}catch(x){}});
 $('gt').onchange=e=>{cfg.gate=e.target.checked;save()};
 $('th').oninput=e=>{cfg.th=e.target.value/1000;$('mk').style.left=e.target.value+'%';save()};
 $('dev').onchange=async e=>{cfg.dev=e.target.value;save();try{await startMic()}catch(x){}};
+async function refreshDevices(){if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices)return;try{const ds=await navigator.mediaDevices.enumerateDevices(),ins=ds.filter(x=>x.kind==='audioinput'),outs=ds.filter(x=>x.kind==='audiooutput'),sel=$('dev'),out=$('odev'),wanted=cfg.dev||((mic&&mic.st.getAudioTracks()[0].getSettings().deviceId)||'');sel.innerHTML='';ins.forEach((x,i)=>{const o=E('option','',x.label||'Microfone '+(i+1));o.value=x.deviceId;sel.append(o)});if(wanted&&ins.some(x=>x.deviceId===wanted))sel.value=wanted;else if(ins[0])sel.value=ins[0].deviceId;out.innerHTML='';const def=E('option','','Padrão do aparelho');def.value='';out.append(def);outs.forEach((x,i)=>{const o=E('option','',x.label||'Saída de áudio '+(i+1));o.value=x.deviceId;out.append(o)});out.value=outs.some(x=>x.deviceId===cfg.odev)?cfg.odev:''}catch(e){console.warn('Não foi possível listar dispositivos de áudio',e)}}
+async function fillOut(){await refreshDevices()}
+navigator.mediaDevices?.addEventListener?.('devicechange',()=>{if($('set').classList.contains('s'))refreshDevices()});
+$('odev').onchange=e=>{cfg.odev=e.target.value;save();applySink()};$('rdev').onclick=()=>refreshDevices();
 $('sn2').onchange=e=>{cfg.snd=e.target.checked;save();SND.click()};
 $('tst').onclick=()=>monitor(!(mic&&mic.mon));
 
@@ -630,42 +646,49 @@ async function uploadSound(f,tgt){if(!f||!/^audio\//.test(f.type)){toast('Escolh
   sbSig='';drawSoundboard();SND.ok()}catch(e){toast('Não foi possível enviar o som')}}
 async function deleteMySound(s){if(!confirm('Excluir o som “'+s.name+'”?'))return;const {error}=await sb.from('user_sounds').delete().eq('id',s.id);if(error){toast('Não foi possível excluir o som');return}
  mySounds=mySounds.filter(x=>x.id!=s.id);sbSig='';drawSoundboard();try{const k=String(s.url).split('/object/public/media/')[1];if(k)sb.storage.from('media').remove([decodeURIComponent(k)])}catch(e){}toast('Som excluído')}
-function playSound(s,loop=false){if(!vcCh){toast('Entre na chamada para ouvir: entre na chamada primeiro');return}try{const c=ctx();soundDest=soundDest||c.createMediaStreamDestination();const a=new Audio(s.url);a.crossOrigin='anonymous';a.loop=loop;a.volume=.9;const src=c.createMediaElementSource(a),gain=c.createGain();src.connect(gain);gain.connect(c.destination);gain.connect(soundDest);const track=soundDest.stream.getAudioTracks()[0];soundNodes.set(a,{src,gain,track});lobby?.send({type:'broadcast',event:'sound-meta',payload:{uid,streamId:soundDest.stream.id,active:true}});Object.values(pcs).forEach(o=>{if(!o.sound){o.sound=o.pc.addTrack(track,soundDest.stream);offer(Object.keys(pcs).find(k=>pcs[k]===o)).catch(()=>{})}});a.onended=()=>{const n=soundNodes.get(a);if(n){lobby?.send({type:'broadcast',event:'sound-meta',payload:{uid,streamId:soundDest.stream.id,active:false}});Object.values(pcs).forEach(o=>{if(o.sound){try{o.pc.removeTrack(o.sound)}catch(e){}o.sound=null}});soundNodes.delete(a);Object.keys(pcs).forEach(k=>offer(k).catch(()=>{}))}};a.play().catch(()=>toast('O navegador bloqueou o áudio'))}catch(e){toast('Não foi possível tocar este som')}}
+function playSound(s,loop=false){if(!vcCh){toast('Entre na chamada para ouvir: entre na chamada primeiro');return}try{const c=ctx();soundDest=soundDest||c.createMediaStreamDestination();const a=new Audio(s.url);a.crossOrigin='anonymous';a.loop=loop;a.volume=.9;const src=c.createMediaElementSource(a),gain=c.createGain();src.connect(gain);gain.connect(c.destination);gain.connect(soundDest);const track=soundDest.stream.getAudioTracks()[0];soundNodes.set(a,{src,gain,track});lobby?.send({type:'broadcast',event:'sound-meta',payload:{uid,streamId:soundDest.stream.id,active:true}});Object.values(pcs).forEach(o=>{if(!o.sound)o.sound=o.pc.addTrack(track,soundDest.stream)});a.onended=()=>{const n=soundNodes.get(a);if(n){lobby?.send({type:'broadcast',event:'sound-meta',payload:{uid,streamId:soundDest.stream.id,active:false}});Object.values(pcs).forEach(o=>{if(o.sound){try{o.pc.removeTrack(o.sound)}catch(e){}o.sound=null}});soundNodes.delete(a);}};a.play().catch(()=>toast('O navegador bloqueou o áudio'))}catch(e){toast('Não foi possível tocar este som')}}
 async function deleteSound(s){if(!isAdmin()||!confirm('Excluir o som “'+s.name+'” do servidor?'))return;const {error}=await sb.from('server_sounds').delete().eq('id',s.id);if(error){toast('Não foi possível excluir o som');return}sounds=sounds.filter(x=>x.id!=s.id);drawSoundboard();toast('Som excluído')}
 $('sndf').onchange=e=>{uploadSound(e.target.files[0],sndTgt);e.target.value=''};
 
 /* ===== voz (WebRTC) + tela ===== */
-const sig=(to,d)=>lobby.send({type:'broadcast',event:'sig',payload:Object.assign({to,from:myKey,vc:vcCh},d)});
-function mkPC(pid){if(pcs[pid])return pcs[pid];const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]}),o={pc,q:[],rd:false};pcs[pid]=o;
- pc.addTrack(mic.track,mic.dest.stream);if(soundDest)o.sound=pc.addTrack(soundDest.stream.getAudioTracks()[0],soundDest.stream);if(scr)o.vs=pc.addTrack(scr.getVideoTracks()[0],scr);
- pc.onicecandidate=e=>e.candidate&&sig(pid,{c:e.candidate});
- pc.ontrack=e=>{if(e.track.kind=='video'){const st=e.streams[0]||new MediaStream([e.track]);vids[pid]=st;e.track.onmute=e.track.onended=()=>{delete vids[pid];syncScr()};e.track.onunmute=()=>{vids[pid]=st;syncScr()};syncScr();return}
-  const st=e.streams[0],p=peers.find(x=>x.peer==pid),u=p&&p.uid,isSound=st&&u&&peerSoundStreamIds[u]===st.id;if(isSound){const key=u+':'+st.id;let a=soundAuds[key];if(!a){a=new Audio();a.autoplay=true;soundAuds[key]=a}a.srcObject=st;a.muted=deaf||!!soundMuted[u];a.play().catch(()=>{})}else{let a=auds[pid];if(!a){a=new Audio();a.autoplay=true;auds[pid]=a}a.srcObject=st;a.muted=deaf;a.play().catch(()=>{})}};return o}
-async function offer(pid){const o=mkPC(pid);await o.pc.setLocalDescription(await o.pc.createOffer());sig(pid,{sdp:o.pc.localDescription})}
-async function onSig(from,d){const o=mkPC(from);if(d.sdp){if(d.sdp.type=='offer'&&o.pc.signalingState!='stable'&&myKey<from)return;await o.pc.setRemoteDescription(d.sdp);o.rd=true;for(const c of o.q)await o.pc.addIceCandidate(c);o.q=[];if(d.sdp.type=='offer'){await o.pc.setLocalDescription(await o.pc.createAnswer());sig(from,{sdp:o.pc.localDescription})}}else if(d.c){o.rd?await o.pc.addIceCandidate(d.c):o.q.push(d.c)}}
-function sync(){if(!vcCh||!mic)return;const ids=inVoice(vcCh).filter(p=>p.peer!=myKey).map(p=>p.peer);
- ids.forEach(id=>{if(!pcs[id]&&myKey<id)offer(id).catch(()=>{})});
- Object.keys(pcs).forEach(k=>{if(!ids.includes(k)){pcs[k].pc.close();delete pcs[k];delete vids[k];if(auds[k]){auds[k].srcObject=null;delete auds[k]}syncScr()}})}
+const sig=(to,d)=>lobby&&lobby.send({type:'broadcast',event:'sig',payload:Object.assign({to,from:myKey,vc:vcCh},d)});
+// STUN improves NAT traversal, but networks that block direct P2P also require TURN credentials.
+const ICE_SERVERS=[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'},{urls:'stun:stun1.l.google.com:19302'}];
+async function sendVideoMeta(pid,kind,stream){if(lobby&&stream){try{await lobby.send({type:'broadcast',event:'video-meta',payload:{to:pid,from:myKey,streamId:stream.id,kind}})}catch(e){console.warn('Metadados de vídeo não enviados',e)}}}
+function routePendingVideo(pid,streamId){const k=pid+':'+streamId,st=pendingVideos[k],kind=videoKinds[k];if(!st||!kind)return;if(kind==='camera'){camVids[pid]=st;draw()}else{vids[pid]=st;syncScr()}delete pendingVideos[k]}
+function receiveVideo(pid,stream,track){pendingVideos[pid+':'+stream.id]=stream;routePendingVideo(pid,stream.id);if(track)track.onended=()=>{if(camVids[pid]===stream){delete camVids[pid];draw()}if(vids[pid]===stream){delete vids[pid];syncScr()}delete pendingVideos[pid+':'+stream.id]}}
+function mkPC(pid){if(pcs[pid])return pcs[pid];const pc=new RTCPeerConnection({iceServers:ICE_SERVERS}),o={pc,q:[],rd:false,polite:myKey>pid,makingOffer:false,ignoreOffer:false,isSettingRemoteAnswerPending:false};pcs[pid]=o;
+ pc.addTrack(mic.track,mic.dest.stream);if(soundDest)o.sound=pc.addTrack(soundDest.stream.getAudioTracks()[0],soundDest.stream);if(callCam){sendVideoMeta(pid,'camera',callCam);o.cam=pc.addTrack(callCam.getVideoTracks()[0],callCam)}if(scr){sendVideoMeta(pid,'screen',scr);o.vs=pc.addTrack(scr.getVideoTracks()[0],scr)}
+ pc.onicecandidate=e=>e.candidate&&sig(pid,{c:e.candidate});pc.onnegotiationneeded=()=>negotiate(pid,o);
+ pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'){try{pc.restartIce()}catch(e){}negotiate(pid,o)}else if(pc.connectionState==='connected'&&o.retryTimer){clearTimeout(o.retryTimer);o.retryTimer=null}};
+ pc.oniceconnectionstatechange=()=>{if(pc.iceConnectionState==='disconnected'&&!o.retryTimer)o.retryTimer=setTimeout(()=>{o.retryTimer=null;if(pcs[pid]===o&&pc.iceConnectionState==='disconnected'){try{pc.restartIce()}catch(e){}negotiate(pid,o)}},4000);if(pc.iceConnectionState==='failed'){try{pc.restartIce()}catch(e){}negotiate(pid,o)}};
+ pc.ontrack=e=>{if(e.track.kind==='video'){receiveVideo(pid,e.streams[0]||new MediaStream([e.track]),e.track);return}const st=e.streams[0],p=peers.find(x=>x.peer===pid),u=p&&p.uid,isSound=st&&u&&peerSoundStreamIds[u]===st.id;if(isSound){const key=u+':'+st.id;let a=soundAuds[key];if(!a){a=new Audio();a.autoplay=true;soundAuds[key]=a}a.srcObject=st;a.muted=deaf||!!soundMuted[u];if(cfg.odev&&a.setSinkId)a.setSinkId(cfg.odev).catch(()=>{});a.play().catch(()=>{})}else{let a=auds[pid];if(!a){a=new Audio();a.autoplay=true;auds[pid]=a}a.srcObject=st;a.muted=deaf;if(cfg.odev&&a.setSinkId)a.setSinkId(cfg.odev).catch(()=>{});a.play().catch(()=>{})}};return o}
+async function negotiate(pid,o){if(!lobby||!vcCh||!o||o.makingOffer||o.pc.signalingState!=='stable')return;try{o.makingOffer=true;await o.pc.setLocalDescription(await o.pc.createOffer());sig(pid,{sdp:o.pc.localDescription})}catch(e){console.warn('Falha na negociação WebRTC',pid,e)}finally{o.makingOffer=false}}
+async function onSig(from,d){if(!vcCh||!d||d.vc!==vcCh)return;const o=mkPC(from),pc=o.pc;if(d.sdp){const readyForOffer=!o.makingOffer&&(pc.signalingState==='stable'||o.isSettingRemoteAnswerPending),collision=d.sdp.type==='offer'&&!readyForOffer;o.ignoreOffer=!o.polite&&collision;if(o.ignoreOffer)return;if(collision&&o.polite)await pc.setLocalDescription({type:'rollback'});o.isSettingRemoteAnswerPending=d.sdp.type==='answer';await pc.setRemoteDescription(d.sdp);o.isSettingRemoteAnswerPending=false;o.rd=true;for(const c of o.q)await pc.addIceCandidate(c);o.q=[];if(d.sdp.type==='offer'){await pc.setLocalDescription(await pc.createAnswer());sig(from,{sdp:pc.localDescription})}}else if(d.c){try{o.rd?await pc.addIceCandidate(d.c):o.q.push(d.c)}catch(e){if(!o.ignoreOffer)console.warn('Candidato ICE recusado',e)}}}
+function sync(){if(!vcCh||!mic)return;const ids=inVoice(vcCh).filter(p=>p.peer!==myKey).map(p=>p.peer);ids.forEach(id=>{clearTimeout(peerDropTimers[id]);delete peerDropTimers[id];mkPC(id)});Object.keys(pcs).forEach(k=>{if(!ids.includes(k)&&!peerDropTimers[k])peerDropTimers[k]=setTimeout(()=>{delete peerDropTimers[k];if(inVoice(vcCh).some(p=>p.peer===k))return;const o=pcs[k];if(o){clearTimeout(o.retryTimer);o.pc.close();delete pcs[k]}delete vids[k];delete camVids[k];Object.keys(pendingVideos).filter(x=>x.startsWith(k+':')).forEach(x=>delete pendingVideos[x]);Object.keys(videoKinds).filter(x=>x.startsWith(k+':')).forEach(x=>delete videoKinds[x]);if(auds[k]){auds[k].srcObject=null;delete auds[k]}syncScr();draw()},5000)})}
 async function joinVoice(id){if(!lobby){toast('Conectando… tente de novo em instantes');return}if(vcCh)leaveVoice(true);try{await startMic()}catch(e){micErr(e);return}
  vcCh=id;SND.join();stat();setPres({voice:id,mute:muted,share:false});sync();draw()}
- function leaveVoice(q){stopRing(true);stopShare(true);Object.values(pcs).forEach(o=>o.pc.close());pcs={};vids={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};soundNodes.forEach((n,a)=>{a.pause();a.src=''});soundNodes.clear();vcCh=null;stopMic();setPres({voice:null,share:false});stat();syncScr();if(!q){SND.leave();draw()}}
+ function leaveVoice(q){stopRing(true);stopShare(true);stopCallCamera();Object.values(peerDropTimers).forEach(clearTimeout);peerDropTimers={};Object.values(pcs).forEach(o=>{clearTimeout(o.retryTimer);o.pc.close()});pcs={};vids={};camVids={};pendingVideos={};videoKinds={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};Object.values(soundAuds).forEach(a=>a.srcObject=null);soundAuds={};soundNodes.forEach((n,a)=>{a.pause();a.src=''});soundNodes.clear();vcCh=null;stopMic();setPres({voice:null,share:false,camera:false});stat();syncScr();draw()}
 $('vl').onclick=()=>{const id=vcId();if(!id)return;vcCh==id?leaveVoice():joinVoice(id)};
 function setMute(v){if(!v&&sv!='home'&&memberMuted(uid)){toast('Um administrador mantém seu microfone silenciado');return}muted=v;if(v)pres.speaking=false;v?SND.mute():SND.unmute();$('bm').classList.toggle('red',muted);setPres({mute:muted,speaking:!!pres.speaking});stat();draw()}
-function setDeaf(v){deaf=v;if(v){muted=true;pres.speaking=false}Object.values(auds).forEach(a=>a.muted=deaf);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted,deaf,speaking:!!pres.speaking});stat();draw()}
+function setDeaf(v){deaf=v;if(v){muted=true;pres.speaking=false}Object.values(auds).forEach(a=>a.muted=deaf);Object.entries(soundAuds).forEach(([k,a])=>a.muted=deaf||!!soundMuted[k.split(':')[0]]);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted,deaf,speaking:!!pres.speaking});stat();draw()}
 const stat=()=>$('st').textContent=deaf?'sem áudio':muted?'mudo':vcCh?'em chamada':'online';
 $('bm').onclick=()=>setMute(!muted);$('vm').onclick=()=>setMute(!muted);$('bd').onclick=()=>setDeaf(!deaf);
 function syncScr(){const box=$('scr'),want={};if(scr)want.me={s:scr,n:'Sua tela'};Object.keys(vids).forEach(k=>{const p=peers.find(x=>x.peer==k);want[k]={s:vids[k],n:name(p&&p.uid)+' · tela'}});
  Object.keys(vel).forEach(k=>{if(!want[k]){vel[k].w.remove();delete vel[k]}});
  Object.keys(want).forEach(k=>{let v=vel[k];if(!v){const w=E('div','scr'),el=document.createElement('video'),l=E('div','lbl');el.autoplay=true;el.playsInline=true;el.muted=true;w.append(el,l);w.onclick=()=>el.requestFullscreen&&el.requestFullscreen();box.append(w);vel[k]=v={w,el,l}}
-  if(v.el.srcObject!==want[k].s){v.el.srcObject=want[k].s;v.el.play().catch(()=>{})}v.l.textContent=want[k].n});
+  if(v.el.srcObject!==want[k].s){v.el.srcObject=want[k].s;v.el.play().catch(()=>{})}if(cfg.odev&&v.el.setSinkId)v.el.setSinkId(cfg.odev).catch(()=>{});v.l.textContent=want[k].n});
  const has=Object.keys(want).length;box.style.display=has?'flex':'none';$('vc').classList.toggle('sharing',!!has)}
 async function startShare(){if(!vcCh)return;try{scr=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false})}catch(e){return}
  const t=scr.getVideoTracks()[0];t.contentHint='detail';t.onended=()=>stopShare();
- for(const [pid,o] of Object.entries(pcs)){o.vs=o.pc.addTrack(t,scr);offer(pid).catch(()=>{})}
+ for(const [pid,o] of Object.entries(pcs)){await sendVideoMeta(pid,'screen',scr);o.vs=o.pc.addTrack(t,scr)}
  setPres({share:true});SND.unmute();draw()}
 function stopShare(q){if(!scr)return;scr.getTracks().forEach(t=>t.stop());scr=null;
- if(!q){for(const [pid,o] of Object.entries(pcs)){if(o.vs){try{o.pc.removeTrack(o.vs)}catch(e){}o.vs=null;offer(pid).catch(()=>{})}}setPres({share:false});SND.mute();draw()}}
+ if(!q){for(const [pid,o] of Object.entries(pcs)){if(o.vs){try{o.pc.removeTrack(o.vs)}catch(e){}o.vs=null}}setPres({share:false});SND.mute();draw()}}
 $('vsh').onclick=()=>scr?stopShare():startShare();
+async function startCallCamera(){if(!vcCh)return;try{const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'}},audio:false}),track=stream.getVideoTracks()[0];callCam=stream;track.onended=()=>stopCallCamera();for(const [pid,o] of Object.entries(pcs)){await sendVideoMeta(pid,'camera',stream);o.cam=o.pc.addTrack(track,stream)}setPres({camera:true});draw()}catch(e){toast(e&&e.name==='NotAllowedError'?'Permita o acesso à câmera nas configurações do navegador.':'Não foi possível iniciar a câmera. Verifique se ela está conectada e disponível.')}}
+function stopCallCamera(){if(!callCam)return;const old=callCam;callCam=null;old.getTracks().forEach(t=>t.stop());for(const o of Object.values(pcs)){if(o.cam){try{o.pc.removeTrack(o.cam)}catch(e){}o.cam=null}}setPres({camera:false});draw()}
+$('vcam').onclick=()=>callCam?stopCallCamera():startCallCamera();
 
 /* ===== ligações diretas ===== */
 let ringT=null,inRing=null,ringTone=null,ringTO=null;
@@ -686,4 +709,9 @@ function declineCall(){const d=inRing;hideRing();if(d&&lobby)lobby.send({type:'b
 $('callb').onclick=startCall;
 
 init();
-</script></body></html>
+</script><div id="camm" class="ov"><div class="card" style="max-width:520px;width:100%">
+<div class="lb">Câmera</div>
+<video id="camv" autoplay playsinline muted style="width:100%;border-radius:12px;background:#000"></video>
+<div class="ctl" style="margin-top:10px"><button type="button" class="glass" id="camx">Cancelar</button><button type="button" class="glass on" id="camshot">📸 Tirar foto</button></div>
+<div class="hint" style="text-align:center;margin-top:6px">Permita o acesso à câmera quando o navegador pedir.</div></div></div>
+</body></html>
