@@ -192,14 +192,14 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 <form class="card" id="addf"><div class="lb">Adicionar amigo</div><div class="row"><input class="fi" id="addc" placeholder="0000-0000" inputmode="numeric" maxlength="9" autocomplete="off"><button class="glass on sm" data-q="1">Adicionar</button></div></form>
 <div id="frl"></div></div>
 <div id="msgs"></div>
-<div id="vc"><div id="scr"></div><div class="tiles"><div class="tgrid" id="tl"></div></div><div id="vcm"></div><div class="ctl vcc"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vcam" data-q="1" style="display:none">📷 Câmera</button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="sound-panel" style="display:none"></div></div>
+<div id="vc"><div id="scr"></div><div class="tiles"><div class="tgrid" id="tl"></div></div><div id="vcm"></div><div class="ctl vcc"><button class="glass on" id="vl">Entrar na chamada</button><button class="glass" id="vcam" data-q="1" style="display:none" aria-label="Ligar câmera" title="Ligar câmera"></button><button class="glass" id="vsh" data-q="1">Compartilhar tela</button><button class="glass" id="vm" data-q="1">Silenciar</button><button class="glass" id="vs">Ajustes de voz</button></div><div id="sndb" class="sound-panel" style="display:none"></div></div>
 <div id="stk"></div><div id="replybar" class="glass" style="display:none;align-items:center;gap:8px;padding:7px 12px;margin:0 14px 8px;border-radius:12px;font-size:12px"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span><button type="button" class="ib glass" id="cancelReply" title="Cancelar resposta">×</button></div><form id="cf"><button type="button" class="ib glass" id="att" title="Enviar foto" data-q="1">📎</button><button type="button" class="ib glass" id="cam" title="Abrir câmera" data-q="1">📷</button><button type="button" class="ib glass" id="stb" title="Figurinhas" data-q="1">😊</button><input id="in" placeholder="Enviar mensagem" autocomplete="off"><button id="send" class="glass on" data-q="1">Enviar</button></form></main>
 <aside id="mem" class="pane"><div class="lb" id="mlb">Online agora</div><div id="ml"></div></aside>
 </div>
 
 <div class="ov" id="set"><div class="box pane"><h3>Ajustes de voz</h3>
 <div class="card"><div class="lb">Entrada de áudio — microfone</div><select id="dev" aria-label="Entrada de áudio"></select><button class="glass sm" id="rdev" type="button" style="margin-top:8px">Atualizar dispositivos</button></div>
-<div class="card"><div class="lb">Saída de áudio — alto-falante ou fone</div><select id="odev" aria-label="Saída de áudio"></select><div class="hint" style="margin-top:4px">Escolha onde ouvir a chamada. A seleção depende do suporte do navegador; em alguns, só funciona em HTTPS ou no app instalado.</div></div>
+<div class="card"><div class="lb">Saída de áudio — alto-falante ou fone</div><select id="odev" aria-label="Saída de áudio"></select><div class="hint" style="margin-top:4px">Escolha onde ouvir a chamada. A seleção depende do suporte do navegador; em alguns, só funciona em HTTPS ou no app instalado.</div></div><div class="card"><div class="lb">Câmera</div><select id="cdev" aria-label="Câmera de vídeo"></select><div class="hint" style="margin-top:4px">Escolha qual câmera usar nas chamadas. Se trocar durante uma chamada, o vídeo será atualizado. Alguns navegadores só mostram os nomes depois da primeira autorização.</div></div>
 <div class="card"><div class="lb">Qualidade do áudio</div>
 <label class="rw">Supressão de ruído<input type="checkbox" class="sw" id="ns"></label>
 <label class="rw">Cancelamento de eco<input type="checkbox" class="sw" id="ec"></label>
@@ -245,7 +245,7 @@ const LOGO='data:image/webp;base64,UklGRqgNAABXRUJQVlA4WAoAAAAQAAAAvwAAvwAAQUxQS
 
 const $=i=>document.getElementById(i);
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-const cfg=Object.assign({dev:'',ns:true,ec:true,agc:true,gate:true,th:.012,snd:true},(()=>{try{return JSON.parse(localStorage.getItem('cfg'))||{}}catch(e){return{}}})());
+const cfg=Object.assign({dev:'',cam:'',ns:true,ec:true,agc:true,gate:true,th:.012,snd:true},(()=>{try{return JSON.parse(localStorage.getItem('cfg'))||{}}catch(e){return{}}})());
 const save=()=>{try{localStorage.setItem('cfg',JSON.stringify(cfg))}catch(e){}};
 const toast=t=>{const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',3200)};
 
@@ -432,6 +432,8 @@ const IC={
  hpoff:'<path d="M4 15v-3a8 8 0 0 1 12.5-6.6"/><path d="M20 12v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="m2 2 20 20"/>',
  scr:'<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
  phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+ cam:'<rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3z"/>',
+ camoff:'<rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3z"/><path d="m2 2 20 20"/>',
  sl:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>'};
 /* cores do fundo da caixa: tira as 3 cores dominantes da foto */
 const colC={};
@@ -466,7 +468,7 @@ function drawVc(id){const t=$('tl');if(tvId!=id){t.innerHTML='';tEl={};tvId=id}
  const j=vcCh==id,dm=id.startsWith('dm:');
  $('vl').className='glass '+(j?'rb red':'on');$('vl').title=j?(dm?'Desligar':'Sair da chamada'):'';$('vl').innerHTML=j?svg(IC.phone,22):svg(IC.phone,18)+(dm?'Atender':'Entrar na chamada');
  $('vm').style.display=j?'':'none';$('vm').className='glass rb'+(muted?' red':'');$('vm').title=muted?'Reativar microfone':'Silenciar microfone';$('vm').innerHTML=svg(muted?IC.micoff:IC.mic,22);
- $('vcam').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia?'':'none';$('vcam').className='glass rb'+(callCam?' on':'');$('vcam').title=callCam?'Desligar câmera':'Ligar câmera';$('vcam').textContent=callCam?'📹':'📷';$('vsh').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?'':'none';$('vsh').className='glass rb'+(scr?' on':'');$('vsh').title=scr?'Parar compartilhamento':'Compartilhar tela';$('vsh').innerHTML=svg(IC.scr,22);
+ $('vcam').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia?'':'none';$('vcam').className='glass rb'+(callCam?' on':'');$('vcam').title=callCam?'Desligar câmera':'Ligar câmera';$('vcam').setAttribute('aria-label',$('vcam').title);$('vcam').innerHTML=svg(callCam?IC.cam:IC.camoff,22);$('vsh').style.display=j&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?'':'none';$('vsh').className='glass rb'+(scr?' on':'');$('vsh').title=scr?'Parar compartilhamento':'Compartilhar tela';$('vsh').innerHTML=svg(IC.scr,22);
  $('vs').className='glass rb';$('vs').title='Ajustes de voz';$('vs').innerHTML=svg(IC.sl,22);
  drawSoundboard()}
 addEventListener('resize',()=>draw());
@@ -621,10 +623,10 @@ $('cls').onclick=closeSet;$('bs').onclick=openSet;$('vs').onclick=openSet;
 $('gt').onchange=e=>{cfg.gate=e.target.checked;save()};
 $('th').oninput=e=>{cfg.th=e.target.value/1000;$('mk').style.left=e.target.value+'%';save()};
 $('dev').onchange=async e=>{cfg.dev=e.target.value;save();try{await startMic()}catch(x){}};
-async function refreshDevices(){if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices)return;try{const ds=await navigator.mediaDevices.enumerateDevices(),ins=ds.filter(x=>x.kind==='audioinput'),outs=ds.filter(x=>x.kind==='audiooutput'),sel=$('dev'),out=$('odev'),wanted=cfg.dev||((mic&&mic.st.getAudioTracks()[0].getSettings().deviceId)||'');sel.innerHTML='';ins.forEach((x,i)=>{const o=E('option','',x.label||'Microfone '+(i+1));o.value=x.deviceId;sel.append(o)});if(wanted&&ins.some(x=>x.deviceId===wanted))sel.value=wanted;else if(ins[0])sel.value=ins[0].deviceId;out.innerHTML='';const def=E('option','','Padrão do aparelho');def.value='';out.append(def);outs.forEach((x,i)=>{const o=E('option','',x.label||'Saída de áudio '+(i+1));o.value=x.deviceId;out.append(o)});out.value=outs.some(x=>x.deviceId===cfg.odev)?cfg.odev:''}catch(e){console.warn('Não foi possível listar dispositivos de áudio',e)}}
+async function refreshDevices(){if(!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices)return;try{const ds=await navigator.mediaDevices.enumerateDevices(),ins=ds.filter(x=>x.kind==='audioinput'),outs=ds.filter(x=>x.kind==='audiooutput'),cams=ds.filter(x=>x.kind==='videoinput'),sel=$('dev'),out=$('odev'),camSel=$('cdev'),wanted=cfg.dev||((mic&&mic.st.getAudioTracks()[0].getSettings().deviceId)||'');sel.innerHTML='';ins.forEach((x,i)=>{const o=E('option','',x.label||'Microfone '+(i+1));o.value=x.deviceId;sel.append(o)});if(wanted&&ins.some(x=>x.deviceId===wanted))sel.value=wanted;else if(ins[0])sel.value=ins[0].deviceId;out.innerHTML='';const def=E('option','','Padrão do aparelho');def.value='';out.append(def);outs.forEach((x,i)=>{const o=E('option','',x.label||'Saída de áudio '+(i+1));o.value=x.deviceId;out.append(o)});out.value=outs.some(x=>x.deviceId===cfg.odev)?cfg.odev:'';camSel.innerHTML='';cams.forEach((x,i)=>{const o=E('option','',x.label||'Câmera '+(i+1));o.value=x.deviceId;camSel.append(o)});camSel.value=cams.some(x=>x.deviceId===cfg.cam)?cfg.cam:(cams[0]?.deviceId||'')}catch(e){console.warn('Não foi possível listar dispositivos de áudio/vídeo',e)}}
 async function fillOut(){await refreshDevices()}
 navigator.mediaDevices?.addEventListener?.('devicechange',()=>{if($('set').classList.contains('s'))refreshDevices()});
-$('odev').onchange=e=>{cfg.odev=e.target.value;save();applySink()};$('rdev').onclick=()=>refreshDevices();
+$('odev').onchange=e=>{cfg.odev=e.target.value;save();applySink()};$('cdev').onchange=async e=>{cfg.cam=e.target.value;save();if(callCam)await switchCallCamera()};$('rdev').onclick=()=>refreshDevices();
 $('sn2').onchange=e=>{cfg.snd=e.target.checked;save();SND.click()};
 $('tst').onclick=()=>monitor(!(mic&&mic.mon));
 
@@ -691,8 +693,9 @@ async function startShare(){if(!vcCh)return;try{scr=await navigator.mediaDevices
 function stopShare(q){if(!scr)return;scr.getTracks().forEach(t=>t.stop());scr=null;
  if(!q){for(const [pid,o] of Object.entries(pcs)){if(o.vs){try{o.pc.removeTrack(o.vs)}catch(e){}o.vs=null}}setPres({share:false});SND.mute();draw()}}
 $('vsh').onclick=()=>scr?stopShare():startShare();
-async function startCallCamera(){if(!vcCh)return;try{const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'}},audio:false}),track=stream.getVideoTracks()[0];callCam=stream;track.onended=()=>stopCallCamera();for(const [pid,o] of Object.entries(pcs)){await sendVideoMeta(pid,'camera',stream);o.cam=o.pc.addTrack(track,stream)}setPres({camera:true});draw()}catch(e){toast(e&&e.name==='NotAllowedError'?'Permita o acesso à câmera nas configurações do navegador.':'Não foi possível iniciar a câmera. Verifique se ela está conectada e disponível.')}}
-function stopCallCamera(){if(!callCam)return;const old=callCam;callCam=null;old.getTracks().forEach(t=>t.stop());for(const o of Object.values(pcs)){if(o.cam){try{o.pc.removeTrack(o.cam)}catch(e){}o.cam=null}}setPres({camera:false});draw()}
+async function requestCallCamera(){const base={facingMode:{ideal:'user'}};try{return await navigator.mediaDevices.getUserMedia({video:Object.assign({},base,cfg.cam?{deviceId:{exact:cfg.cam}}:{}),audio:false})}catch(e){if(!cfg.cam||['NotAllowedError','SecurityError'].includes(e.name))throw e;cfg.cam='';save();toast('A câmera selecionada não está disponível; tentando a câmera padrão.');return navigator.mediaDevices.getUserMedia({video:base,audio:false})}}
+async function startCallCamera(){if(!vcCh)return;try{const stream=await requestCallCamera(),track=stream.getVideoTracks()[0];callCam=stream;track.onended=()=>stopCallCamera();await refreshDevices();for(const [pid,o] of Object.entries(pcs)){await sendVideoMeta(pid,'camera',stream);o.cam=o.pc.addTrack(track,stream)}setPres({camera:true});draw()}catch(e){toast(e&&e.name==='NotAllowedError'?'Permita o acesso à câmera nas configurações do navegador.':'Não foi possível iniciar a câmera. Verifique se ela está conectada e disponível.')}}
+async function switchCallCamera(){if(!vcCh||!callCam)return;try{const next=await requestCallCamera(),track=next.getVideoTracks()[0],old=callCam;callCam=next;track.onended=()=>stopCallCamera();for(const [pid,o] of Object.entries(pcs)){if(o.cam)await o.cam.replaceTrack(track);else{await sendVideoMeta(pid,'camera',next);o.cam=o.pc.addTrack(track,next)}}old.getTracks().forEach(t=>t.stop());await refreshDevices();draw()}catch(e){toast(e&&e.name==='NotAllowedError'?'Permita o acesso à câmera nas configurações do navegador.':'Não foi possível trocar para essa câmera.')}}
 $('vcam').onclick=()=>callCam?stopCallCamera():startCallCamera();
 
 /* ===== ligações diretas ===== */
