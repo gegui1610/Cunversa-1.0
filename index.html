@@ -241,6 +241,9 @@ const CFG={
   KEY:'sb_publishable_eR5i3zR7jbdg7goiSXZKJA_nWs_j13A',  // chave publicável do Supabase (pode ficar no site)
   NAME:'Cunversa',   // nome mostrado na tela de login
   DOWNLOAD_URL:'https://github.com/gegui1610/Cunversa-1.0/releases/download/v1.0.0/Cunversa-Setup.exe', // instalador oficial
+  // TURN = servidor relé. Sem ele, quem está atrás de CGNAT/4G/alguns roteadores NÃO consegue ouvir o outro.
+  // Troque pelas suas credenciais gratuitas (ex.: metered.ca/stun-turn ou Cloudflare Calls TURN). O relé abaixo é público e pode falhar.
+  ICE:[{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turns:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}],
   TAG:'O cantinho da nossa galera.'
 };
 const LOGO='data:image/webp;base64,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';
@@ -305,7 +308,7 @@ async function init(){
  if(!window.supabase)await loadLib('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js');
  $('lgo').src=LOGO;$('lgs').src=LOGO;$('an').textContent=CFG.NAME;$('atg').textContent=CFG.TAG;document.title=CFG.NAME;const inDesktop=/Electron/i.test(navigator.userAgent),dl=appDownloadUrl();document.querySelectorAll('[data-download-app]').forEach(e=>{if(inDesktop)e.style.display='none';else if(dl)e.href=dl;else e.style.display='none'});
  if(!CFG.URL||!CFG.KEY||!window.supabase){$('setup').classList.add('s');return}
- sb=supabase.createClient(CFG.URL,CFG.KEY);
+ sb=supabase.createClient(CFG.URL,CFG.KEY,{realtime:{params:{eventsPerSecond:20},heartbeatIntervalMs:15000,worker:true}});
  sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>{if(s&&s.user){if(!booted){booted=true;boot(s.user)}}else{if(booted)teardown();booted=false;showAuth()}},0)});
 }
 function showAuth(){$('app').style.display='none';$('auth').classList.add('s')}
@@ -366,11 +369,17 @@ function realtime(){dbch=sb.channel('db')
 
 /* ===== presença + sinalização de voz ===== */
 let lobbyInitSeq=0;
+const spk={},lastSeen={},byed={};let graceT=null,lastRetrack=0,spkT=0,spkTimer=null;
+function retrack(){if(!lobby||Date.now()-lastRetrack<2000)return;lastRetrack=Date.now();try{lobby.track(pres).catch?.(()=>{})}catch(e){}}
+/* "falando" vai por broadcast (não por presença): evita centenas de atualizações de presença que derrubavam o canal */
+function announceSpeak(){const send=()=>{spkTimer=null;spkT=Date.now();try{lobby&&lobby.send({type:'broadcast',event:'speak',payload:{peer:myKey,v:!!pres.speaking}}).catch?.(()=>{})}catch(e){}};const w=250-(Date.now()-spkT);clearTimeout(spkTimer);if(w<=0)send();else spkTimer=setTimeout(send,w)}
+setInterval(()=>{let c=false;peers.forEach(p=>{if(p.speaking&&p.peer!==myKey){const s=spk[p.peer];if(!s||Date.now()-s.t>6000){p.speaking=false;c=true}}});if(c)draw()},3000);
 async function lobbyInit(){const seq=++lobbyInitSeq,old=lobby;lobby=null;if(old){try{await old.untrack()}catch(e){}try{await sb.removeChannel(old)}catch(e){}}
  if(!uid||seq!==lobbyInitSeq)return;myKey=myKey||uid+':'+Math.random().toString(36).slice(2,7);pres=Object.assign({},pres,{uid,t:Date.now(),voice:vcCh||null,mute:!!muted,deaf:!!deaf,speaking:!!pres.speaking,share:!!scr,camera:!!callCam});
  const channel=sb.channel('lobby',{config:{presence:{key:myKey},broadcast:{self:false}}});lobby=channel;
  channel.on('presence',{event:'sync'},presSync)
-  .on('broadcast',{event:'bye'},()=>presSync())
+  .on('broadcast',{event:'bye'},({payload:d})=>{if(d&&d.peer&&d.peer!==myKey){byed[d.peer]=1;peers=peers.filter(p=>p.peer!==d.peer)}presSync()})
+  .on('broadcast',{event:'speak'},({payload:d})=>{if(!d||!d.peer)return;spk[d.peer]={v:!!d.v,t:Date.now()};const p=peers.find(x=>x.peer===d.peer);if(p){p.speaking=!!d.v;draw()}})
   .on('broadcast',{event:'sig'},({payload:d})=>{if(!vcCh||!d||d.to!==myKey||d.vc!==vcCh)return;onSig(d.from,d).catch(()=>{})})
   .on('broadcast',{event:'ring'},({payload:d})=>{if(d&&d.to===uid)showRing(d)})
   .on('broadcast',{event:'moderation'},({payload:d})=>{if(d&&d.to===uid&&d.kind=='mute'&&d.value){setMute(true);toast('Você foi silenciado por um administrador') }})
@@ -381,9 +390,16 @@ async function lobbyInit(){const seq=++lobbyInitSeq,old=lobby;lobby=null;if(old)
   .subscribe(st=>{if(lobby!==channel)return;if(st==='SUBSCRIBED'){lobbyAttempts=0;clearTimeout(lobbyRetry);lobbyRetry=null;channel.track(pres).catch?.(()=>{});presSync()}else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)){clearTimeout(lobbyRetry);lobbyRetry=setTimeout(()=>{if(uid&&lobby===channel)lobbyInit()},Math.min(15000,1000*Math.pow(2,Math.min(lobbyAttempts++,4))))}})}
 function presSync(){if(!lobby)return;const s=lobby.presenceState(),unique=new Map();
  Object.entries(s).forEach(([k,a])=>{const p=Object.assign({peer:k},a[a.length-1]);if(!p.uid)return;const o=unique.get(p.uid);if(!o||(p.peer===myKey&&o.peer!==myKey)||(o.peer!==myKey&&p.peer!==myKey&&((!!vcCh&&p.voice===vcCh&&o.voice!==vcCh)||((!vcCh||((p.voice===vcCh)===(o.voice===vcCh)))&&(p.t||0)>(o.t||0)))))unique.set(p.uid,p)});
- peers=[...unique.values()];applyPeerVolumes();ensure(peers.map(p=>p.uid)).then(draw);sync();chkRing();draw()}
-addEventListener('pagehide',()=>{try{if(lobby){lobby.send({type:'broadcast',event:'bye',payload:{peer:myKey,uid}});lobby.untrack()}}catch(e){}});
-document.addEventListener('visibilitychange',()=>document.documentElement.classList.toggle('hid',document.hidden));
+ const now=Date.now(),keys=new Set(Object.keys(s));
+ if(!keys.has(myKey)){unique.set(uid,Object.assign({},pres,{peer:myKey}));retrack()}
+ unique.forEach(p=>{p.speaking=!!(spk[p.peer]&&spk[p.peer].v&&now-spk[p.peer].t<6000);lastSeen[p.peer]=now});
+ /* tolerância: quem some da presença por um instante continua na lista por até 10s (a menos que tenha saído de verdade) */
+ const kept=peers.filter(o=>o.peer!==myKey&&!keys.has(o.peer)&&!unique.has(o.uid)&&!byed[o.peer]&&now-(lastSeen[o.peer]||0)<10000);
+ peers=[...unique.values(),...kept];clearTimeout(graceT);if(kept.length)graceT=setTimeout(presSync,3000);
+ applyPeerVolumes();ensure(peers.map(p=>p.uid)).then(draw);sync();chkRing();draw()}
+addEventListener('online',()=>{if(uid)lobbyInit()});
+addEventListener('pagehide',e=>{if(e&&e.persisted)return;try{if(lobby){lobby.send({type:'broadcast',event:'bye',payload:{peer:myKey,uid}});lobby.untrack()}}catch(e){}});
+document.addEventListener('visibilitychange',()=>{document.documentElement.classList.toggle('hid',document.hidden);if(!document.hidden&&lobby){retrack();presSync()}});
 const setPres=p=>{Object.assign(pres,p,{t:Date.now()});if(lobby)lobby.track(pres).catch?.(()=>{})};
 
 /* ===== desenho ===== */
@@ -616,7 +632,7 @@ async function startMic(){const mon=mic&&mic.mon;stopMic();let st;const audio={e
 function monitor(on){if(!mic)return;mic.mon=on;try{on?mic.gate.connect(AC.destination):mic.gate.disconnect(AC.destination)}catch(e){}$('tst').textContent=on?'Parar teste':'Ouvir meu microfone'}
 function tick(){if(!mic)return;mic.an.getFloatTimeDomainData(mic.buf);let s=0;for(const x of mic.buf)s+=x*x;const r=Math.sqrt(s/mic.buf.length),n=performance.now();
  if(!cfg.gate||r>cfg.th)mic.hold=n+300;const open=n<mic.hold&&!(muted&&vcCh);mic.gate.gain.setTargetAtTime(open?1:0,AC.currentTime,open?.01:.08);
- const speaking=open&&r>cfg.th;if(speaking!==!!pres.speaking){pres.speaking=speaking;lobby&&lobby.track(pres);draw()}const t=document.querySelector('.tile.me');t&&t.classList.toggle('sp',speaking);if($('set').classList.contains('s')){$('mt').style.width=Math.min(100,r*1000)+'%';const gs=!cfg.gate?'Porta desligada':r>cfg.th?'Voz passando':'Cortando ruído';if(gs!==tick.l){tick.l=gs;$('gst').textContent=gs}}}
+ if(r>cfg.th)mic.talk=n+400;const speaking=open&&n<mic.talk;if(speaking!==!!pres.speaking){pres.speaking=speaking;announceSpeak();draw()}else if(speaking&&n-spkT>2000)announceSpeak();const t=document.querySelector('.tile.me');t&&t.classList.toggle('sp',speaking);if($('set').classList.contains('s')){$('mt').style.width=Math.min(100,r*1000)+'%';const gs=!cfg.gate?'Porta desligada':r>cfg.th?'Voz passando':'Cortando ruído';if(gs!==tick.l){tick.l=gs;$('gst').textContent=gs}}}
 const micErr=x=>toast(x&&x.name=='NotAllowedError'?'Microfone bloqueado. Clique no cadeado do navegador e permita.':x&&x.name=='NotFoundError'?'Nenhum microfone encontrado.':'Não consegui acessar o microfone.');
 function paintSet(){$('ns').checked=cfg.ns;$('ec').checked=cfg.ec;$('agc').checked=cfg.agc;$('gt').checked=cfg.gate;$('th').value=cfg.th*1000;$('mk').style.left=cfg.th*1000+'%';$('sn2').checked=cfg.snd}
 $('set').onclick=e=>{if(e.target==$('set'))closeSet()};
@@ -665,7 +681,7 @@ $('sndf').onchange=e=>{uploadSound(e.target.files[0],sndTgt);e.target.value=''};
 /* ===== voz (WebRTC) + tela ===== */
 const sig=(to,d)=>lobby&&lobby.send({type:'broadcast',event:'sig',payload:Object.assign({to,from:myKey,vc:vcCh},d)});
 // STUN improves NAT traversal, but networks that block direct P2P also require TURN credentials.
-const ICE_SERVERS=[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'},{urls:'stun:stun1.l.google.com:19302'}];
+const ICE_SERVERS=[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'},{urls:'stun:stun1.l.google.com:19302'}].concat(CFG.ICE||[]);
 async function sendVideoMeta(pid,kind,stream){if(lobby&&stream){try{await lobby.send({type:'broadcast',event:'video-meta',payload:{to:pid,from:myKey,streamId:stream.id,kind}})}catch(e){console.warn('Metadados de vídeo não enviados',e)}}}
 function routePendingVideo(pid,streamId){const k=pid+':'+streamId,st=pendingVideos[k],kind=videoKinds[k];if(!st||!kind)return;if(kind==='camera'){camVids[pid]=st;draw()}else{vids[pid]=st;syncScr()}delete pendingVideos[k]}
 function receiveVideo(pid,stream,track){pendingVideos[pid+':'+stream.id]=stream;routePendingVideo(pid,stream.id);if(track)track.onended=()=>{if(camVids[pid]===stream){delete camVids[pid];draw()}if(vids[pid]===stream){delete vids[pid];syncScr()}delete pendingVideos[pid+':'+stream.id]}}
@@ -682,8 +698,8 @@ async function joinVoice(id){if(!lobby){toast('Conectando… tente de novo em in
  vcCh=id;SND.join();stat();setPres({voice:id,mute:muted,share:false});sync();draw()}
  function leaveVoice(q){stopRing(true);stopShare(true);stopCallCamera();Object.values(peerDropTimers).forEach(clearTimeout);peerDropTimers={};Object.values(pcs).forEach(o=>{clearTimeout(o.retryTimer);o.pc.close()});pcs={};vids={};camVids={};pendingVideos={};videoKinds={};Object.values(auds).forEach(a=>a.srcObject=null);auds={};Object.values(soundAuds).forEach(a=>a.srcObject=null);soundAuds={};soundNodes.forEach((n,a)=>{a.pause();a.src=''});soundNodes.clear();vcCh=null;stopMic();setPres({voice:null,share:false,camera:false});stat();syncScr();draw()}
 $('vl').onclick=()=>{const id=vcId();if(vcCh&&(vcCh===id||!id)){leaveVoice();return}if(id)joinVoice(id)};
-function setMute(v){if(!v&&sv!='home'&&memberMuted(uid)){toast('Um administrador mantém seu microfone silenciado');return}muted=v;if(v)pres.speaking=false;v?SND.mute():SND.unmute();$('bm').classList.toggle('red',muted);setPres({mute:muted,speaking:!!pres.speaking});stat();draw()}
-function setDeaf(v){deaf=v;if(v){muted=true;pres.speaking=false}Object.values(auds).forEach(a=>a.muted=deaf);Object.entries(soundAuds).forEach(([k,a])=>a.muted=deaf);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted,deaf,speaking:!!pres.speaking});stat();draw()}
+function setMute(v){if(!v&&sv!='home'&&memberMuted(uid)){toast('Um administrador mantém seu microfone silenciado');return}muted=v;if(v){pres.speaking=false;announceSpeak()}v?SND.mute():SND.unmute();$('bm').classList.toggle('red',muted);setPres({mute:muted,speaking:!!pres.speaking});stat();draw()}
+function setDeaf(v){deaf=v;if(v){muted=true;pres.speaking=false;announceSpeak()}Object.values(auds).forEach(a=>a.muted=deaf);Object.entries(soundAuds).forEach(([k,a])=>a.muted=deaf);v?SND.mute():SND.unmute();$('bd').classList.toggle('red',deaf);$('bm').classList.toggle('red',muted);setPres({mute:muted,deaf,speaking:!!pres.speaking});stat();draw()}
 const stat=()=>$('st').textContent=deaf?'sem áudio':muted?'mudo':vcCh?'em chamada':'online';
 $('bm').onclick=()=>setMute(!muted);$('vm').onclick=()=>setMute(!muted);$('bd').onclick=()=>setDeaf(!deaf);
 function syncScr(){const box=$('scr'),want={};if(scr)want.me={s:scr,n:'Sua tela'};Object.keys(vids).forEach(k=>{const p=peers.find(x=>x.peer==k);want[k]={s:vids[k],n:name(p&&p.uid)+' · tela'}});
